@@ -1,5 +1,6 @@
 import hashlib
 import json
+import math
 
 ICD_SCALE = 1
 
@@ -8,6 +9,10 @@ DIGEST_BYTES = 1
 OUTPUT_BITS = 4
 
 ICD_INT_BYTES = 4
+
+ROUND_STEP = 100000         
+COUNTER_MIN = 1
+COUNTER_MAX = 9             
 
 
 def icd_to_int(icd_ms):
@@ -38,6 +43,27 @@ def icd_to_bits(icd_ms):
     }
 
 
+def ceil_round(icd_ms, step=ROUND_STEP):
+    if icd_ms <= 0:
+        return 0
+    return math.ceil(icd_ms / step) * step
+
+
+def add_sequential_counter(records, round_step=ROUND_STEP,
+                            counter_min=COUNTER_MIN, counter_max=COUNTER_MAX):
+    counter = counter_min
+    for rec in records:
+        rounded = ceil_round(rec["icd_ms"], step=round_step)
+        rec["rounded"] = rounded
+        rec["icd_counter_added"] = rounded + counter
+
+        counter += 1
+        if counter > counter_max:
+            counter = counter_min
+
+    return records
+
+
 def transform_records(records):
     transformed = []
     for rec in records:
@@ -58,6 +84,7 @@ def transform_json_file(input_path, output_path):
         data = json.load(f)
 
     transformed_packets = transform_records(data.get("packets", []))
+    add_sequential_counter(transformed_packets)
 
     output = {
         "source_file": input_path,
@@ -67,6 +94,8 @@ def transform_json_file(input_path, output_path):
         "hash_algorithm": "SHAKE-128",
         "digest_bits_per_icd": OUTPUT_BITS,
         "icd_scale": "1 unit = 1 ms (dibulatkan, sub-ms dibuang)",
+        "round_step": ROUND_STEP,
+        "counter_range": [COUNTER_MIN, COUNTER_MAX],
         "packets": transformed_packets,
     }
 
