@@ -9,7 +9,7 @@ from scapy.layers.l2 import ARP, Ether
 from scapy.layers.inet import IP, UDP
 from scapy.layers.dhcp import DHCP
 
-from icd_bits import icd_to_bits
+from icd_bits import icd_to_bits, CounterState
 
 DHCP_PORTS = (67, 68)
 MDNS_PORT = 5353
@@ -38,6 +38,7 @@ class ICDExtractor:
         self.matcher = matcher
         self._queue = queue.Queue()
         self._worker = None
+        self._counter_state = CounterState()
 
     def _classify(self, pkt):
         is_l2_broadcast = pkt.haslayer(Ether) and pkt[Ether].dst == BROADCAST_MAC
@@ -72,7 +73,7 @@ class ICDExtractor:
     def _process_loop(self):
         while True:
             item = self._queue.get()
-            if item is None:  # sentinel untuk berhenti
+            if item is None:  
                 self._queue.task_done()
                 break
 
@@ -94,6 +95,8 @@ class ICDExtractor:
             src_mac = pkt[Ether].src if pkt.haslayer(Ether) else None
             src_ip = pkt[IP].src if pkt.haslayer(IP) else None
 
+            bits = icd_to_bits(icd_ms, self._counter_state)
+
             record = {
                 "packet_no": self.packet_count,
                 "protocol": proto,
@@ -101,15 +104,17 @@ class ICDExtractor:
                 "src_ip": src_ip,
                 "timestamp": wallclock,
                 "icd_ms": icd_ms,
+                "rounded": bits["rounded"],
+                "icd_counter_added": bits["icd_counter_added"],
             }
             self.records.append(record)
 
             print(f"[{self.packet_count:04d}] {proto:<5} "
                   f"src={src_ip or src_mac or '?':<15} "
-                  f"ICD={icd_ms} ms")
+                  f"ICD={icd_ms} ms -> rounded+counter="
+                  f"{bits['icd_counter_added']}")
 
             if self.matcher is not None and not self.matcher.is_complete:
-                bits = icd_to_bits(icd_ms)
                 attempt = self.matcher.try_match(
                     packet_no=self.packet_count,
                     bit_string=bits["bit_string"],
@@ -125,8 +130,8 @@ class ICDExtractor:
         print("Listening for broadcast packets.")
         if self.matcher is not None:
             print(f"Bit matching aktif: {len(self.matcher.windows)} window "
-                  f"({self.matcher.window_size} bit/window) untuk dicocokkan.")
-            print("Sniffing akan berhenti otomatis setelah semua window cocok.")
+                  f"({self.matcher.window_size} bit/window) match.")
+            print("Sniffing til its done.")
         print("Press Ctrl+C to stop and save results.\n")
 
         self._worker = threading.Thread(target=self._process_loop, daemon=True)

@@ -19,34 +19,56 @@ def icd_to_int(icd_ms):
     return int(round(icd_ms * ICD_SCALE))
 
 
-def icd_to_hash_bytes(icd_ms):
-    icd_int = icd_to_int(icd_ms)
-    icd_bytes = icd_int.to_bytes(ICD_INT_BYTES, byteorder="big", signed=False)
+def ceil_round(icd_ms, step=ROUND_STEP):
+    if icd_ms <= 0:
+        return 0
+    return math.ceil(icd_ms / step) * step
+
+
+class CounterState:
+    def __init__(self, counter_min=COUNTER_MIN, counter_max=COUNTER_MAX):
+        self.counter_min = counter_min
+        self.counter_max = counter_max
+        self.counter = counter_min
+
+    def next_value(self, icd_ms, round_step=ROUND_STEP):
+        rounded = ceil_round(icd_ms, step=round_step)
+        counter = self.counter
+        rounded_with_counter = rounded + counter
+
+        self.counter += 1
+        if self.counter > self.counter_max:
+            self.counter = self.counter_min
+
+        return rounded, counter, rounded_with_counter
+
+
+def icd_to_hash_bytes(rounded_with_counter):
+    icd_bytes = rounded_with_counter.to_bytes(
+        ICD_INT_BYTES, byteorder="big", signed=False
+    )
 
     shake = hashlib.shake_128()
     shake.update(icd_bytes)
     return shake.digest(DIGEST_BYTES)
 
 
-def icd_to_bits(icd_ms):
+def icd_to_bits(icd_ms, counter_state):
     icd_int = icd_to_int(icd_ms)
-    digest = icd_to_hash_bytes(icd_ms)
-    byte_val = digest[0]  
-    
+    rounded, counter, rounded_with_counter = counter_state.next_value(icd_ms)
+    digest = icd_to_hash_bytes(rounded_with_counter)
+    byte_val = digest[0]
+
     nibble_val = byte_val & 0xF
-    
+
     return {
-        "icd_ms": icd_ms,
-        "icd_int_ms": icd_int,
+        "icd_ms": icd_ms,                       
+        "icd_int_ms": icd_int,                   
+        "rounded": rounded,
+        "icd_counter_added": rounded_with_counter,  # hash source
         "bit_string": format(nibble_val, "04b"),  # 4-bit binary string
         "bit_int": nibble_val,  # Integer 0-15
     }
-
-
-def ceil_round(icd_ms, step=ROUND_STEP):
-    if icd_ms <= 0:
-        return 0
-    return math.ceil(icd_ms / step) * step
 
 
 def add_sequential_counter(records, round_step=ROUND_STEP,
@@ -64,10 +86,13 @@ def add_sequential_counter(records, round_step=ROUND_STEP,
     return records
 
 
-def transform_records(records):
+def transform_records(records, counter_state=None):
+    if counter_state is None:
+        counter_state = CounterState()
+
     transformed = []
     for rec in records:
-        bits = icd_to_bits(rec["icd_ms"])
+        bits = icd_to_bits(rec["icd_ms"], counter_state)
         transformed.append({
             "packet_no": rec.get("packet_no"),
             "protocol": rec.get("protocol"),
@@ -84,7 +109,6 @@ def transform_json_file(input_path, output_path):
         data = json.load(f)
 
     transformed_packets = transform_records(data.get("packets", []))
-    add_sequential_counter(transformed_packets)
 
     output = {
         "source_file": input_path,
@@ -93,7 +117,7 @@ def transform_json_file(input_path, output_path):
         "total_packets": data.get("total_packets"),
         "hash_algorithm": "SHAKE-128",
         "digest_bits_per_icd": OUTPUT_BITS,
-        "icd_scale": "1 unit = 1 ms (dibulatkan, sub-ms dibuang)",
+        "icd_scale": "1 unit = 1 ms",
         "round_step": ROUND_STEP,
         "counter_range": [COUNTER_MIN, COUNTER_MAX],
         "packets": transformed_packets,
