@@ -123,16 +123,6 @@ plt.show()
 
 ##
 
-```
-.
-├── README.md
-├── Untitled16.ipynb
-└── images/
-    ├── output_1.png
-    ├── output_3.png
-    └── output_4.png
-```
-
 ##
 
 ```bash
