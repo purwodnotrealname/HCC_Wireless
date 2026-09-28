@@ -105,14 +105,14 @@ class ICDExtractor:
                 "timestamp": wallclock,
                 "icd_ms": icd_ms,
                 "rounded": bits["rounded"],
-                "icd_counter_added": bits["icd_counter_added"],
+                "counter": bits["counter"],
             }
             self.records.append(record)
 
             print(f"[{self.packet_count:04d}] {proto:<5} "
                   f"src={src_ip or src_mac or '?':<15} "
-                  f"ICD={icd_ms} ms -> rounded+counter="
-                  f"{bits['icd_counter_added']}")
+                  f"ICD={icd_ms} ms -> counter={bits['counter']:02d} "
+                  f"-> bits={bits['bit_string']}")
 
             if self.matcher is not None and not self.matcher.is_complete:
                 attempt = self.matcher.try_match(

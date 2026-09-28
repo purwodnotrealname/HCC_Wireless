@@ -4,15 +4,17 @@ import math
 
 ICD_SCALE = 1
 
-DIGEST_BYTES = 1
-
 OUTPUT_BITS = 4
+NIBBLE_SPACE = 2 ** OUTPUT_BITS     
 
-ICD_INT_BYTES = 4
 
-ROUND_STEP = 100000         
 COUNTER_MIN = 1
-COUNTER_MAX = 9             
+COUNTER_MAX = NIBBLE_SPACE           
+
+COUNTER_BYTES = 4                      
+KEY_DIGEST_BYTES = 8                  
+
+ROUND_STEP = 100                      
 
 
 def icd_to_int(icd_ms):
@@ -25,6 +27,42 @@ def ceil_round(icd_ms, step=ROUND_STEP):
     return math.ceil(icd_ms / step) * step
 
 
+def _counter_digest(counter):
+    """SHAKE-128 dari counter saja (tanpa nilai ICD)."""
+    shake = hashlib.shake_128()
+    shake.update(counter.to_bytes(COUNTER_BYTES, byteorder="big", signed=False))
+    return shake.digest(KEY_DIGEST_BYTES)
+
+
+def build_counter_table(counter_min=COUNTER_MIN, counter_max=COUNTER_MAX):
+    size = counter_max - counter_min + 1
+    if size != NIBBLE_SPACE:
+        raise ValueError(
+            f"Rentang counter harus {NIBBLE_SPACE} nilai "
+            f"(2^{OUTPUT_BITS}), dapat {size}"
+        )
+
+    keyed = []
+    for c in range(counter_min, counter_max + 1):
+        keyed.append((_counter_digest(c), c - counter_min))
+
+    keys = [k for k, _ in keyed]
+    if len(set(keys)) != len(keys):
+        raise RuntimeError("Tabrakan digest pada kunci urutan; naikkan KEY_DIGEST_BYTES")
+
+    keyed.sort(key=lambda kv: kv[0])
+    order = [idx for _, idx in keyed]        
+
+
+    table = {}
+    for pos, counter in enumerate(range(counter_min, counter_max + 1)):
+        table[counter] = order[pos]
+    return table
+
+
+COUNTER_TABLE = build_counter_table()
+
+
 class CounterState:
     def __init__(self, counter_min=COUNTER_MIN, counter_max=COUNTER_MAX):
         self.counter_min = counter_min
@@ -32,58 +70,37 @@ class CounterState:
         self.counter = counter_min
 
     def next_value(self, icd_ms, round_step=ROUND_STEP):
+        """Ambil counter saat ini lalu majukan (wrap 16 -> 1).
+
+        icd_ms hanya dipakai untuk 'rounded' (logging); tidak memengaruhi bit.
+        """
         rounded = ceil_round(icd_ms, step=round_step)
         counter = self.counter
-        rounded_with_counter = rounded + counter
 
         self.counter += 1
         if self.counter > self.counter_max:
             self.counter = self.counter_min
 
-        return rounded, counter, rounded_with_counter
+        return rounded, counter
 
 
-def icd_to_hash_bytes(rounded_with_counter):
-    icd_bytes = rounded_with_counter.to_bytes(
-        ICD_INT_BYTES, byteorder="big", signed=False
-    )
-
-    shake = hashlib.shake_128()
-    shake.update(icd_bytes)
-    return shake.digest(DIGEST_BYTES)
+def counter_to_nibble(counter):
+    return COUNTER_TABLE[counter]
 
 
 def icd_to_bits(icd_ms, counter_state):
     icd_int = icd_to_int(icd_ms)
-    rounded, counter, rounded_with_counter = counter_state.next_value(icd_ms)
-    digest = icd_to_hash_bytes(rounded_with_counter)
-    byte_val = digest[0]
-
-    nibble_val = byte_val & 0xF
+    rounded, counter = counter_state.next_value(icd_ms)
+    nibble_val = counter_to_nibble(counter)
 
     return {
-        "icd_ms": icd_ms,                       
-        "icd_int_ms": icd_int,                   
+        "icd_ms": icd_ms,
+        "icd_int_ms": icd_int,
         "rounded": rounded,
-        "icd_counter_added": rounded_with_counter,  # hash source
-        "bit_string": format(nibble_val, "04b"),  # 4-bit binary string
-        "bit_int": nibble_val,  # Integer 0-15
+        "counter": counter,                      # sumber hash (satu-satunya)
+        "bit_string": format(nibble_val, "04b"),
+        "bit_int": nibble_val,
     }
-
-
-def add_sequential_counter(records, round_step=ROUND_STEP,
-                            counter_min=COUNTER_MIN, counter_max=COUNTER_MAX):
-    counter = counter_min
-    for rec in records:
-        rounded = ceil_round(rec["icd_ms"], step=round_step)
-        rec["rounded"] = rounded
-        rec["icd_counter_added"] = rounded + counter
-
-        counter += 1
-        if counter > counter_max:
-            counter = counter_min
-
-    return records
 
 
 def transform_records(records, counter_state=None):
@@ -116,10 +133,13 @@ def transform_json_file(input_path, output_path):
         "initialization_time": data.get("initialization_time"),
         "total_packets": data.get("total_packets"),
         "hash_algorithm": "SHAKE-128",
+        "hash_input": "counter only",
         "digest_bits_per_icd": OUTPUT_BITS,
         "icd_scale": "1 unit = 1 ms",
-        "round_step": ROUND_STEP,
         "counter_range": [COUNTER_MIN, COUNTER_MAX],
+        "counter_table": {
+            str(c): format(v, "04b") for c, v in COUNTER_TABLE.items()
+        },
         "packets": transformed_packets,
     }
 
