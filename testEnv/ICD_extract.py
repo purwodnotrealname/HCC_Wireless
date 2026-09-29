@@ -29,13 +29,15 @@ BPF_FILTER = (
 
 class ICDExtractor:
 
-    def __init__(self, iface=None, matcher=None):
+    def __init__(self, iface=None, matcher=None, on_match=None, ignore_arp_marker=None):
         self.iface = iface
         self.t0 = None
         self.t0_wallclock = None
         self.records = []
         self.packet_count = 0
         self.matcher = matcher
+        self.on_match = on_match
+        self.ignore_arp_marker = ignore_arp_marker
         self._queue = queue.Queue()
         self._worker = None
         self._counter_state = CounterState()
@@ -44,6 +46,16 @@ class ICDExtractor:
         is_l2_broadcast = pkt.haslayer(Ether) and pkt[Ether].dst == BROADCAST_MAC
 
         if pkt.haslayer(ARP):
+            if is_l2_broadcast and self.ignore_arp_marker is not None:
+                target_ip, source_ip, source_mac = self.ignore_arp_marker
+                if (
+                    pkt[ARP].op == 1
+                    and pkt[ARP].pdst == target_ip
+                    and pkt[ARP].psrc == source_ip
+                    and pkt[ARP].hwsrc.lower() == source_mac.lower()
+                    and pkt[Ether].src.lower() == source_mac.lower()
+                ):
+                    return None
             if is_l2_broadcast:
                 return "ARP"
             return None
@@ -122,6 +134,11 @@ class ICDExtractor:
                 print(f"       -> window {attempt['window_index']:02d} "
                       f"[{attempt['window_bits']}] vs [{attempt['compared_bits']}] "
                       f"= {attempt['status'].upper()}")
+                if attempt["status"] == "matched" and self.on_match is not None:
+                    try:
+                        self.on_match(attempt)
+                    except Exception as exc:
+                        print(f"       -> ARP request gagal dikirim: {exc}")
 
             self._queue.task_done()
 

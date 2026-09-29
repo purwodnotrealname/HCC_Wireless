@@ -3,19 +3,21 @@ import sys
 from ICD_extract import ICDExtractor, list_interfaces
 from icd_bits import transform_json_file
 from icd_match import SequentialBitMatcher
+from arp_signal import ARPMatchNotifier
 
 OUTPUT_FILE = "icd_results.json"
 BITS_OUTPUT_FILE = "icd_bits_results.json"
 MATCH_OUTPUT_FILE = "icd_match_results.json"
+ARP_TARGET_IP = "192.168.1.99" 
 
 # hardcoded 100 bits msg
 HARDCODED_MESSAGE_BITS = (
-    "010010010100001101000100001000000100110101000001"
-    "010101000100001101001000001100010011001000110011"
-    "0001"
+    "101001110010110101111000110001011010001111101001"
+    "001110101111010001010011100111001011000101011110"
+    "1011"
 )
 assert all(ch in "01" for ch in HARDCODED_MESSAGE_BITS), (
-    "HARDCODED_MESSAGE_BITS hanya boleh berisi karakter '0'/'1'"
+    "HARDCODED_MESSAGE_BITS'0'/'1'"
 )
 
 
@@ -47,7 +49,13 @@ def choose_interface():
 def main():
     iface = choose_interface()
     matcher = SequentialBitMatcher(HARDCODED_MESSAGE_BITS, window_size=4)
-    extractor = ICDExtractor(iface=iface, matcher=matcher)
+    arp_notifier = ARPMatchNotifier(iface=iface, target_ip=ARP_TARGET_IP)
+    extractor = ICDExtractor(
+        iface=iface,
+        matcher=matcher,
+        on_match=arp_notifier.send_for_match,
+        ignore_arp_marker=(ARP_TARGET_IP, arp_notifier.source_ip, arp_notifier.source_mac),
+    )
 
     try:
         extractor.start()
@@ -60,11 +68,11 @@ def main():
 
         matcher.save_json(MATCH_OUTPUT_FILE)
         if matcher.is_complete:
-            print(f"\nSeluruh {len(matcher.windows)} window pesan berhasil "
-                  f"dicocokkan. Sniffing berhenti otomatis.")
+            print(f"\nevery {len(matcher.windows)} window successfully "
+                  f"matched. Sniffing terminated.")
         else:
-            print(f"\nSniffing dihentikan manual. Progres: "
-                  f"{matcher.match_count}/{len(matcher.windows)} window cocok.")
+            print(f"\nSniffing terminated Progres: "
+                  f"{matcher.match_count}/{len(matcher.windows)} window valid.")
 
 
 if __name__ == "__main__":
