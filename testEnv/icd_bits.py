@@ -1,4 +1,3 @@
-import hashlib
 import json
 import math
 
@@ -10,9 +9,6 @@ NIBBLE_SPACE = 2 ** OUTPUT_BITS
 
 COUNTER_MIN = 1
 COUNTER_MAX = NIBBLE_SPACE           
-
-COUNTER_BYTES = 4                      
-KEY_DIGEST_BYTES = 8                  
 
 ROUND_STEP = 100                      
 
@@ -27,13 +23,6 @@ def ceil_round(icd_ms, step=ROUND_STEP):
     return math.ceil(icd_ms / step) * step
 
 
-def _counter_digest(counter):
-    """SHAKE-128 dari counter saja (tanpa nilai ICD)."""
-    shake = hashlib.shake_128()
-    shake.update(counter.to_bytes(COUNTER_BYTES, byteorder="big", signed=False))
-    return shake.digest(KEY_DIGEST_BYTES)
-
-
 def build_counter_table(counter_min=COUNTER_MIN, counter_max=COUNTER_MAX):
     size = counter_max - counter_min + 1
     if size != NIBBLE_SPACE:
@@ -42,21 +31,22 @@ def build_counter_table(counter_min=COUNTER_MIN, counter_max=COUNTER_MAX):
             f"(2^{OUTPUT_BITS}), dapat {size}"
         )
 
-    keyed = []
-    for c in range(counter_min, counter_max + 1):
-        keyed.append((_counter_digest(c), c - counter_min))
-
-    keys = [k for k, _ in keyed]
-    if len(set(keys)) != len(keys):
-        raise RuntimeError("Tabrakan digest pada kunci urutan; naikkan KEY_DIGEST_BYTES")
-
-    keyed.sort(key=lambda kv: kv[0])
-    order = [idx for _, idx in keyed]        
-
-
     table = {}
-    for pos, counter in enumerate(range(counter_min, counter_max + 1)):
-        table[counter] = order[pos]
+    counter = counter_min
+    first_index = 0
+    last_index = size - 1
+
+    while first_index <= last_index:
+        table[counter] = first_index
+        counter += 1
+
+        if first_index < last_index:
+            table[counter] = last_index
+            counter += 1
+
+        first_index += 1
+        last_index -= 1
+
     return table
 
 
@@ -73,6 +63,7 @@ class CounterState:
         """Ambil counter saat ini lalu majukan (wrap 16 -> 1).
 
         icd_ms hanya dipakai untuk 'rounded' (logging); tidak memengaruhi bit.
+        Setelah wrap, pemetaan kembali menghasilkan nilai bit 0.
         """
         rounded = ceil_round(icd_ms, step=round_step)
         counter = self.counter
@@ -97,9 +88,8 @@ def icd_to_bits(icd_ms, counter_state):
         "icd_ms": icd_ms,
         "icd_int_ms": icd_int,
         "rounded": rounded,
-        "counter": counter,                      # sumber hash (satu-satunya)
-        "bit_string": format(nibble_val, "04b"),
-        "bit_int": nibble_val,
+        "counter": counter,
+        "bit_value": nibble_val,
     }
 
 
@@ -132,13 +122,12 @@ def transform_json_file(input_path, output_path):
         "interface": data.get("interface"),
         "initialization_time": data.get("initialization_time"),
         "total_packets": data.get("total_packets"),
-        "hash_algorithm": "SHAKE-128",
-        "hash_input": "counter only",
-        "digest_bits_per_icd": OUTPUT_BITS,
+        "mapping": "static counter sequence",
+        "output_bits_per_icd": OUTPUT_BITS,
         "icd_scale": "1 unit = 1 ms",
         "counter_range": [COUNTER_MIN, COUNTER_MAX],
         "counter_table": {
-            str(c): format(v, "04b") for c, v in COUNTER_TABLE.items()
+            str(c): v for c, v in COUNTER_TABLE.items()
         },
         "packets": transformed_packets,
     }

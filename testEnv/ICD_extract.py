@@ -9,7 +9,7 @@ from scapy.layers.l2 import ARP, Ether
 from scapy.layers.inet import IP, UDP
 from scapy.layers.dhcp import DHCP
 
-from icd_bits import icd_to_bits, CounterState
+from icd_bits import icd_to_bits, CounterState, OUTPUT_BITS
 
 DHCP_PORTS = (67, 68)
 MDNS_PORT = 5353
@@ -124,15 +124,21 @@ class ICDExtractor:
             print(f"[{self.packet_count:04d}] {proto:<5} "
                   f"src={src_ip or src_mac or '?':<15} "
                   f"ICD={icd_ms} ms -> counter={bits['counter']:02d} "
-                  f"-> bits={bits['bit_string']}")
+                  f"-> bits={bits['bit_value']:0{OUTPUT_BITS}b}")
 
             if self.matcher is not None and not self.matcher.is_complete:
                 attempt = self.matcher.try_match(
                     packet_no=self.packet_count,
-                    bit_string=bits["bit_string"],
+                    bit_value=bits["bit_value"],
+                )
+                window_display = (
+                    f"{attempt['window_value']:0{attempt['window_width']}b}"
+                )
+                compared_display = (
+                    f"{attempt['compared_value']:0{attempt['window_width']}b}"
                 )
                 print(f"       -> window {attempt['window_index']:02d} "
-                      f"[{attempt['window_bits']}] vs [{attempt['compared_bits']}] "
+                      f"[{window_display}] vs [{compared_display}] "
                       f"= {attempt['status'].upper()}")
                 if attempt["status"] == "matched" and self.on_match is not None:
                     try:

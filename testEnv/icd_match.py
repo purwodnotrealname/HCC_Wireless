@@ -1,24 +1,50 @@
 import json
 
 
-def split_message_windows(message_bits, window_size=4):
-    if not message_bits:
-        raise ValueError("message_bits cannot be empty")
-
-    if any(ch not in "01" for ch in message_bits):
-        raise ValueError("message_bits hanya boleh berisi karakter '0'/'1'")
+def split_message_windows(message_value, bit_length, window_size=4):
+    """Split an integer bit pattern into left-to-right integer windows."""
+    if isinstance(message_value, bool) or not isinstance(message_value, int):
+        raise TypeError("message_value must be an integer")
+    if message_value < 0:
+        raise ValueError("message_value cannot be negative")
+    if (isinstance(bit_length, bool) or not isinstance(bit_length, int)
+            or bit_length <= 0):
+        raise ValueError("bit_length must be a positive integer")
+    if message_value.bit_length() > bit_length:
+        raise ValueError("message_value does not fit in bit_length bits")
+    if (isinstance(window_size, bool) or not isinstance(window_size, int)
+            or window_size <= 0):
+        raise ValueError("window_size must be a positive integer")
 
     windows = []
-    for i in range(0, len(message_bits), window_size):
-        windows.append(message_bits[i:i + window_size])
+    for start in range(0, bit_length, window_size):
+        width = min(window_size, bit_length - start)
+        shift = bit_length - start - width
+        value = (message_value >> shift) & ((1 << width) - 1)
+        windows.append((value, width))
     return windows
 
 
 class SequentialBitMatcher:
-    def __init__(self, message_bits, window_size=4):
-        self.message_bits = message_bits
+    def __init__(self, message_value, bit_length, window_size=4,
+                 input_bit_width=4):
+        if (isinstance(input_bit_width, bool)
+                or not isinstance(input_bit_width, int)
+                or input_bit_width <= 0):
+            raise ValueError("input_bit_width must be a positive integer")
+        if (isinstance(window_size, bool) or not isinstance(window_size, int)
+                or window_size <= 0):
+            raise ValueError("window_size must be a positive integer")
+        if window_size > input_bit_width:
+            raise ValueError("window_size cannot exceed input_bit_width")
+
+        self.message_value = message_value
+        self.bit_length = bit_length
         self.window_size = window_size
-        self.windows = split_message_windows(message_bits, window_size)
+        self.input_bit_width = input_bit_width
+        self.windows = split_message_windows(
+            message_value, bit_length, window_size
+        )
 
         self.pointer = 0          # index window 
         self.attempts = []        # history (matched & unmatched)
@@ -34,22 +60,29 @@ class SequentialBitMatcher:
             return None
         return self.windows[self.pointer]
 
-    def try_match(self, packet_no, bit_string):
+    def try_match(self, packet_no, bit_value):
         if self.is_complete:
             return None
+        if isinstance(bit_value, bool) or not isinstance(bit_value, int):
+            raise TypeError("bit_value must be an integer")
+        if not 0 <= bit_value < (1 << self.input_bit_width):
+            raise ValueError(
+                f"bit_value must fit in {self.input_bit_width} bits"
+            )
 
-        window = self.current_window
-        compare_len = len(window)  
-        candidate = bit_string[:compare_len]
+        window_value, window_width = self.current_window
+        shift = self.input_bit_width - window_width
+        candidate = (bit_value >> shift) & ((1 << window_width) - 1)
 
-        matched = (candidate == window)
+        matched = candidate == window_value
 
         attempt = {
             "packet_no": packet_no,
             "window_index": self.pointer,
-            "window_bits": window,
-            "icd_bit_string": bit_string,
-            "compared_bits": candidate,
+            "window_value": window_value,
+            "window_width": window_width,
+            "packet_bit_value": bit_value,
+            "compared_value": candidate,
             "status": "matched" if matched else "unmatched",
         }
         self.attempts.append(attempt)
@@ -62,8 +95,8 @@ class SequentialBitMatcher:
 
     def summary(self):
         return {
-            "message_bits": self.message_bits,
-            "message_length": len(self.message_bits),
+            "message_value": self.message_value,
+            "message_bit_length": self.bit_length,
             "window_size": self.window_size,
             "total_windows": len(self.windows),
             "windows_matched": self.match_count,
