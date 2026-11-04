@@ -1,0 +1,42 @@
+{
+  "poi_definition": "packets that matched a message window",
+  "total_poi_packets": 6,
+  "packets": [
+    {
+      "packet_no": 4,
+      "window_index": 0,
+      "src_ip": null,
+      "src_mac": "f4:70:18:a2:ff:3a"
+    },
+    {
+      "packet_no": 18,
+      "window_index": 1,
+      "src_ip": null,
+      "src_mac": "4c:49:68:c8:44:5e"
+    },
+    {
+      "packet_no": 30,
+      "window_index": 2,
+      "src_ip": "192.168.110.224",
+      "src_mac": "52:7d:92:e1:06:bb"
+    },
+    {
+      "packet_no": 40,
+      "window_index": 3,
+      "src_ip": "192.168.110.130",
+      "src_mac": "98:bd:80:d3:2a:cf"
+    },
+    {
+      "packet_no": 52,
+      "window_index": 4,
+      "src_ip": "192.168.110.130",
+      "src_mac": "98:bd:80:d3:2a:cf"
+    },
+    {
+      "packet_no": 53,
+      "window_index": 5,
+      "src_ip": null,
+      "src_mac": "f4:70:18:a3:37:96"
+    }
+  ]
+}

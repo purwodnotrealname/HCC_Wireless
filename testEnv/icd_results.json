@@ -1,0 +1,1707 @@
+{
+  "interface": null,
+  "initialization_time": "2026-10-21T14:24:48.771",
+  "total_packets": 170,
+  "packets": [
+    {
+      "packet_no": 1,
+      "protocol": "ARP",
+      "src_mac": "d0:ea:11:27:72:4f",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:24:48.771",
+      "icd_ms": 0,
+      "rounded": 0,
+      "counter": 1
+    },
+    {
+      "packet_no": 2,
+      "protocol": "ARP",
+      "src_mac": "d0:ea:11:27:72:4f",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:24:48.885",
+      "icd_ms": 113.197,
+      "rounded": 200,
+      "counter": 2
+    },
+    {
+      "packet_no": 3,
+      "protocol": "ARP",
+      "src_mac": "32:44:73:b7:90:81",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:24:49.115",
+      "icd_ms": 343.445,
+      "rounded": 400,
+      "counter": 3
+    },
+    {
+      "packet_no": 4,
+      "protocol": "ARP",
+      "src_mac": "c8:22:02:4b:c6:86",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:24:49.197",
+      "icd_ms": 425.754,
+      "rounded": 500,
+      "counter": 4
+    },
+    {
+      "packet_no": 5,
+      "protocol": "ARP",
+      "src_mac": "c8:22:02:4b:c6:7a",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:24:49.198",
+      "icd_ms": 426.684,
+      "rounded": 500,
+      "counter": 5
+    },
+    {
+      "packet_no": 6,
+      "protocol": "ARP",
+      "src_mac": "d0:ea:11:27:72:4f",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:24:49.198",
+      "icd_ms": 427.137,
+      "rounded": 500,
+      "counter": 6
+    },
+    {
+      "packet_no": 7,
+      "protocol": "ARP",
+      "src_mac": "d0:ea:11:27:72:4f",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:24:49.815",
+      "icd_ms": 1043.979,
+      "rounded": 1100,
+      "counter": 7
+    },
+    {
+      "packet_no": 8,
+      "protocol": "ARP",
+      "src_mac": "d0:ea:11:27:72:4f",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:24:49.913",
+      "icd_ms": 1141.664,
+      "rounded": 1200,
+      "counter": 8
+    },
+    {
+      "packet_no": 9,
+      "protocol": "ARP",
+      "src_mac": "d0:ea:11:27:72:4f",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:24:50.012",
+      "icd_ms": 1241.344,
+      "rounded": 1300,
+      "counter": 9
+    },
+    {
+      "packet_no": 10,
+      "protocol": "ARP",
+      "src_mac": "d0:ea:11:27:72:4f",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:24:50.117",
+      "icd_ms": 1345.44,
+      "rounded": 1400,
+      "counter": 10
+    },
+    {
+      "packet_no": 11,
+      "protocol": "ARP",
+      "src_mac": "00:12:43:3c:ba:1c",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:24:50.221",
+      "icd_ms": 1450.157,
+      "rounded": 1500,
+      "counter": 11
+    },
+    {
+      "packet_no": 12,
+      "protocol": "ARP",
+      "src_mac": "d0:ea:11:27:72:4f",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:24:50.860",
+      "icd_ms": 2088.558,
+      "rounded": 2100,
+      "counter": 12
+    },
+    {
+      "packet_no": 13,
+      "protocol": "ARP",
+      "src_mac": "80:e4:ba:18:97:e1",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:24:50.888",
+      "icd_ms": 2116.068,
+      "rounded": 2200,
+      "counter": 13
+    },
+    {
+      "packet_no": 14,
+      "protocol": "ARP",
+      "src_mac": "80:e4:ba:18:97:e1",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:24:50.977",
+      "icd_ms": 2206.099,
+      "rounded": 2300,
+      "counter": 14
+    },
+    {
+      "packet_no": 15,
+      "protocol": "ARP",
+      "src_mac": "54:16:51:3b:c9:20",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:24:51.135",
+      "icd_ms": 2363.7,
+      "rounded": 2400,
+      "counter": 15
+    },
+    {
+      "packet_no": 16,
+      "protocol": "ARP",
+      "src_mac": "d0:ea:11:27:72:4f",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:24:51.137",
+      "icd_ms": 2365.863,
+      "rounded": 2400,
+      "counter": 16
+    },
+    {
+      "packet_no": 17,
+      "protocol": "ARP",
+      "src_mac": "00:12:43:3c:ba:1c",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:24:51.257",
+      "icd_ms": 2485.569,
+      "rounded": 2500,
+      "counter": 1
+    },
+    {
+      "packet_no": 18,
+      "protocol": "ARP",
+      "src_mac": "d0:ea:11:27:72:4f",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:24:51.447",
+      "icd_ms": 2676.205,
+      "rounded": 2700,
+      "counter": 2
+    },
+    {
+      "packet_no": 19,
+      "protocol": "ARP",
+      "src_mac": "d0:ea:11:27:72:4f",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:24:51.965",
+      "icd_ms": 3192.893,
+      "rounded": 3200,
+      "counter": 3
+    },
+    {
+      "packet_no": 20,
+      "protocol": "ARP",
+      "src_mac": "d0:ea:11:27:72:4f",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:24:52.277",
+      "icd_ms": 3505.814,
+      "rounded": 3600,
+      "counter": 4
+    },
+    {
+      "packet_no": 21,
+      "protocol": "ARP",
+      "src_mac": "00:12:43:3c:ba:1c",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:24:52.280",
+      "icd_ms": 3508.124,
+      "rounded": 3600,
+      "counter": 5
+    },
+    {
+      "packet_no": 22,
+      "protocol": "ARP",
+      "src_mac": "d0:ea:11:27:72:4f",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:24:52.581",
+      "icd_ms": 3810.431,
+      "rounded": 3900,
+      "counter": 6
+    },
+    {
+      "packet_no": 23,
+      "protocol": "ARP",
+      "src_mac": "d0:ea:11:27:72:4f",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:24:52.989",
+      "icd_ms": 4217.549,
+      "rounded": 4300,
+      "counter": 7
+    },
+    {
+      "packet_no": 24,
+      "protocol": "ARP",
+      "src_mac": "d0:ea:11:27:72:4f",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:24:53.288",
+      "icd_ms": 4517.212,
+      "rounded": 4600,
+      "counter": 8
+    },
+    {
+      "packet_no": 25,
+      "protocol": "ARP",
+      "src_mac": "00:12:43:3c:ba:1c",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:24:53.396",
+      "icd_ms": 4624.629,
+      "rounded": 4700,
+      "counter": 9
+    },
+    {
+      "packet_no": 26,
+      "protocol": "ARP",
+      "src_mac": "d0:ea:11:27:72:4f",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:24:53.601",
+      "icd_ms": 4830.265,
+      "rounded": 4900,
+      "counter": 10
+    },
+    {
+      "packet_no": 27,
+      "protocol": "ARP",
+      "src_mac": "80:e4:ba:18:97:e1",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:24:53.910",
+      "icd_ms": 5139.412,
+      "rounded": 5200,
+      "counter": 11
+    },
+    {
+      "packet_no": 28,
+      "protocol": "ARP",
+      "src_mac": "d0:ea:11:27:72:4f",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:24:54.011",
+      "icd_ms": 5240.243,
+      "rounded": 5300,
+      "counter": 12
+    },
+    {
+      "packet_no": 29,
+      "protocol": "ARP",
+      "src_mac": "c8:22:02:4b:c6:d3",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:24:54.324",
+      "icd_ms": 5552.818,
+      "rounded": 5600,
+      "counter": 13
+    },
+    {
+      "packet_no": 30,
+      "protocol": "ARP",
+      "src_mac": "c8:22:02:4b:c6:c1",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:24:54.326",
+      "icd_ms": 5554.454,
+      "rounded": 5600,
+      "counter": 14
+    },
+    {
+      "packet_no": 31,
+      "protocol": "ARP",
+      "src_mac": "d0:ea:11:27:72:4f",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:24:54.333",
+      "icd_ms": 5562.437,
+      "rounded": 5600,
+      "counter": 15
+    },
+    {
+      "packet_no": 32,
+      "protocol": "ARP",
+      "src_mac": "d0:ea:11:27:72:4f",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:24:55.043",
+      "icd_ms": 6272.181,
+      "rounded": 6300,
+      "counter": 16
+    },
+    {
+      "packet_no": 33,
+      "protocol": "ARP",
+      "src_mac": "d0:ea:11:27:72:4f",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:24:55.134",
+      "icd_ms": 6361.987,
+      "rounded": 6400,
+      "counter": 1
+    },
+    {
+      "packet_no": 34,
+      "protocol": "ARP",
+      "src_mac": "c8:22:02:4b:c6:ff",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:24:55.345",
+      "icd_ms": 6574.168,
+      "rounded": 6600,
+      "counter": 2
+    },
+    {
+      "packet_no": 35,
+      "protocol": "ARP",
+      "src_mac": "d0:ea:11:27:72:4f",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:24:55.346",
+      "icd_ms": 6575.138,
+      "rounded": 6600,
+      "counter": 3
+    },
+    {
+      "packet_no": 36,
+      "protocol": "ARP",
+      "src_mac": "d0:ea:11:27:72:4f",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:24:55.445",
+      "icd_ms": 6673.538,
+      "rounded": 6700,
+      "counter": 4
+    },
+    {
+      "packet_no": 37,
+      "protocol": "ARP",
+      "src_mac": "54:16:51:3b:c8:eb",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:24:55.962",
+      "icd_ms": 7190.741,
+      "rounded": 7200,
+      "counter": 5
+    },
+    {
+      "packet_no": 38,
+      "protocol": "ARP",
+      "src_mac": "d0:ea:11:27:72:4f",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:24:56.048",
+      "icd_ms": 7276.75,
+      "rounded": 7300,
+      "counter": 6
+    },
+    {
+      "packet_no": 39,
+      "protocol": "ARP",
+      "src_mac": "d0:ea:11:27:72:4f",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:24:56.159",
+      "icd_ms": 7387.596,
+      "rounded": 7400,
+      "counter": 7
+    },
+    {
+      "packet_no": 40,
+      "protocol": "ARP",
+      "src_mac": "c8:22:02:4b:c6:c9",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:24:56.367",
+      "icd_ms": 7595.492,
+      "rounded": 7600,
+      "counter": 8
+    },
+    {
+      "packet_no": 41,
+      "protocol": "ARP",
+      "src_mac": "c8:22:02:4b:c6:e3",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:24:56.369",
+      "icd_ms": 7597.734,
+      "rounded": 7600,
+      "counter": 9
+    },
+    {
+      "packet_no": 42,
+      "protocol": "ARP",
+      "src_mac": "d0:ea:11:27:72:4f",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:24:56.371",
+      "icd_ms": 7599.489,
+      "rounded": 7600,
+      "counter": 10
+    },
+    {
+      "packet_no": 43,
+      "protocol": "ARP",
+      "src_mac": "d0:ea:11:27:72:4f",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:24:56.572",
+      "icd_ms": 7800.333,
+      "rounded": 7900,
+      "counter": 11
+    },
+    {
+      "packet_no": 44,
+      "protocol": "ARP",
+      "src_mac": "d0:ea:11:27:72:4f",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:24:57.083",
+      "icd_ms": 8311.87,
+      "rounded": 8400,
+      "counter": 12
+    },
+    {
+      "packet_no": 45,
+      "protocol": "ARP",
+      "src_mac": "d0:ea:11:27:72:4f",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:24:57.186",
+      "icd_ms": 8415.188,
+      "rounded": 8500,
+      "counter": 13
+    },
+    {
+      "packet_no": 46,
+      "protocol": "ARP",
+      "src_mac": "c8:22:02:4b:c6:e7",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:24:57.394",
+      "icd_ms": 8622.959,
+      "rounded": 8700,
+      "counter": 14
+    },
+    {
+      "packet_no": 47,
+      "protocol": "ARP",
+      "src_mac": "d0:ea:11:27:72:4f",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:24:57.414",
+      "icd_ms": 8642.305,
+      "rounded": 8700,
+      "counter": 15
+    },
+    {
+      "packet_no": 48,
+      "protocol": "ARP",
+      "src_mac": "d0:ea:11:27:72:4f",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:24:57.597",
+      "icd_ms": 8826.177,
+      "rounded": 8900,
+      "counter": 16
+    },
+    {
+      "packet_no": 49,
+      "protocol": "ARP",
+      "src_mac": "d0:ea:11:27:72:4f",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:24:57.701",
+      "icd_ms": 8929.993,
+      "rounded": 9000,
+      "counter": 1
+    },
+    {
+      "packet_no": 50,
+      "protocol": "ARP",
+      "src_mac": "d0:ea:11:27:72:4f",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:24:58.210",
+      "icd_ms": 9438.936,
+      "rounded": 9500,
+      "counter": 2
+    },
+    {
+      "packet_no": 51,
+      "protocol": "ARP",
+      "src_mac": "00:12:43:3c:ba:1c",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:24:58.309",
+      "icd_ms": 9536.8,
+      "rounded": 9600,
+      "counter": 3
+    },
+    {
+      "packet_no": 52,
+      "protocol": "ARP",
+      "src_mac": "c8:22:02:4b:c6:cc",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:24:58.412",
+      "icd_ms": 9641.212,
+      "rounded": 9700,
+      "counter": 4
+    },
+    {
+      "packet_no": 53,
+      "protocol": "ARP",
+      "src_mac": "c8:22:02:4b:c6:b7",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:24:58.415",
+      "icd_ms": 9643.944,
+      "rounded": 9700,
+      "counter": 5
+    },
+    {
+      "packet_no": 54,
+      "protocol": "ARP",
+      "src_mac": "d0:ea:11:27:72:4f",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:24:58.508",
+      "icd_ms": 9737.411,
+      "rounded": 9800,
+      "counter": 6
+    },
+    {
+      "packet_no": 55,
+      "protocol": "ARP",
+      "src_mac": "d0:ea:11:27:72:4f",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:24:58.821",
+      "icd_ms": 10050.441,
+      "rounded": 10100,
+      "counter": 7
+    },
+    {
+      "packet_no": 56,
+      "protocol": "ARP",
+      "src_mac": "c8:22:02:4b:c6:7a",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:24:59.338",
+      "icd_ms": 10566.629,
+      "rounded": 10600,
+      "counter": 8
+    },
+    {
+      "packet_no": 57,
+      "protocol": "ARP",
+      "src_mac": "c8:22:02:4b:c6:86",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:24:59.339",
+      "icd_ms": 10567.596,
+      "rounded": 10600,
+      "counter": 9
+    },
+    {
+      "packet_no": 58,
+      "protocol": "ARP",
+      "src_mac": "00:12:43:3c:ba:1c",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:24:59.731",
+      "icd_ms": 10958.899,
+      "rounded": 11000,
+      "counter": 10
+    },
+    {
+      "packet_no": 59,
+      "protocol": "ARP",
+      "src_mac": "d0:ea:11:27:72:4f",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:24:59.732",
+      "icd_ms": 10959.861,
+      "rounded": 11000,
+      "counter": 11
+    },
+    {
+      "packet_no": 60,
+      "protocol": "ARP",
+      "src_mac": "d0:ea:11:27:72:4f",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:24:59.831",
+      "icd_ms": 11059.403,
+      "rounded": 11100,
+      "counter": 12
+    },
+    {
+      "packet_no": 61,
+      "protocol": "ARP",
+      "src_mac": "d0:ea:11:27:72:4f",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:00.257",
+      "icd_ms": 11485.743,
+      "rounded": 11500,
+      "counter": 13
+    },
+    {
+      "packet_no": 62,
+      "protocol": "ARP",
+      "src_mac": "d0:ea:11:27:72:4f",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:01.293",
+      "icd_ms": 12520.719,
+      "rounded": 12600,
+      "counter": 14
+    },
+    {
+      "packet_no": 63,
+      "protocol": "ARP",
+      "src_mac": "00:12:43:3c:ba:1c",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:01.483",
+      "icd_ms": 12711.879,
+      "rounded": 12800,
+      "counter": 15
+    },
+    {
+      "packet_no": 64,
+      "protocol": "ARP",
+      "src_mac": "00:12:43:3c:ba:1c",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:02.408",
+      "icd_ms": 13636.458,
+      "rounded": 13700,
+      "counter": 16
+    },
+    {
+      "packet_no": 65,
+      "protocol": "ARP",
+      "src_mac": "00:12:43:3c:ba:1c",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:02.409",
+      "icd_ms": 13637.118,
+      "rounded": 13700,
+      "counter": 1
+    },
+    {
+      "packet_no": 66,
+      "protocol": "ARP",
+      "src_mac": "d0:ea:11:27:72:4f",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:02.452",
+      "icd_ms": 13681.481,
+      "rounded": 13700,
+      "counter": 2
+    },
+    {
+      "packet_no": 67,
+      "protocol": "ARP",
+      "src_mac": "00:12:43:3c:ba:1c",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:02.817",
+      "icd_ms": 14045.756,
+      "rounded": 14100,
+      "counter": 3
+    },
+    {
+      "packet_no": 68,
+      "protocol": "ARP",
+      "src_mac": "d0:ea:11:27:72:4f",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:02.850",
+      "icd_ms": 14078.35,
+      "rounded": 14100,
+      "counter": 4
+    },
+    {
+      "packet_no": 69,
+      "protocol": "ARP",
+      "src_mac": "d0:ea:11:27:72:4f",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:03.457",
+      "icd_ms": 14685.642,
+      "rounded": 14700,
+      "counter": 5
+    },
+    {
+      "packet_no": 70,
+      "protocol": "ARP",
+      "src_mac": "d0:ea:11:27:72:4f",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:03.469",
+      "icd_ms": 14697.475,
+      "rounded": 14700,
+      "counter": 6
+    },
+    {
+      "packet_no": 71,
+      "protocol": "ARP",
+      "src_mac": "d0:ea:11:27:72:4f",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:03.508",
+      "icd_ms": 14737.213,
+      "rounded": 14800,
+      "counter": 7
+    },
+    {
+      "packet_no": 72,
+      "protocol": "ARP",
+      "src_mac": "00:12:43:3c:ba:1c",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:03.641",
+      "icd_ms": 14869.551,
+      "rounded": 14900,
+      "counter": 8
+    },
+    {
+      "packet_no": 73,
+      "protocol": "ARP",
+      "src_mac": "d0:ea:11:27:72:4f",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:03.642",
+      "icd_ms": 14870.922,
+      "rounded": 14900,
+      "counter": 9
+    },
+    {
+      "packet_no": 74,
+      "protocol": "ARP",
+      "src_mac": "d0:ea:11:27:72:4f",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:04.458",
+      "icd_ms": 15686.898,
+      "rounded": 15700,
+      "counter": 10
+    },
+    {
+      "packet_no": 75,
+      "protocol": "ARP",
+      "src_mac": "c8:22:02:4b:c6:c1",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:04.659",
+      "icd_ms": 15887.923,
+      "rounded": 15900,
+      "counter": 11
+    },
+    {
+      "packet_no": 76,
+      "protocol": "ARP",
+      "src_mac": "c8:22:02:4b:c6:d3",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:04.669",
+      "icd_ms": 15897.97,
+      "rounded": 15900,
+      "counter": 12
+    },
+    {
+      "packet_no": 77,
+      "protocol": "ARP",
+      "src_mac": "00:12:43:3c:ba:1c",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:04.671",
+      "icd_ms": 15899.715,
+      "rounded": 15900,
+      "counter": 13
+    },
+    {
+      "packet_no": 78,
+      "protocol": "ARP",
+      "src_mac": "00:12:43:3c:ba:1c",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:04.672",
+      "icd_ms": 15900.61,
+      "rounded": 16000,
+      "counter": 14
+    },
+    {
+      "packet_no": 79,
+      "protocol": "ARP",
+      "src_mac": "d0:ea:11:27:72:4f",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:04.673",
+      "icd_ms": 15901.42,
+      "rounded": 16000,
+      "counter": 15
+    },
+    {
+      "packet_no": 80,
+      "protocol": "ARP",
+      "src_mac": "80:e4:ba:18:97:e1",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:05.537",
+      "icd_ms": 16765.235,
+      "rounded": 16800,
+      "counter": 16
+    },
+    {
+      "packet_no": 81,
+      "protocol": "ARP",
+      "src_mac": "d0:ea:11:27:72:4f",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:05.539",
+      "icd_ms": 16767.038,
+      "rounded": 16800,
+      "counter": 1
+    },
+    {
+      "packet_no": 82,
+      "protocol": "ARP",
+      "src_mac": "d0:ea:11:27:72:4f",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:05.590",
+      "icd_ms": 16818.599,
+      "rounded": 16900,
+      "counter": 2
+    },
+    {
+      "packet_no": 83,
+      "protocol": "ARP",
+      "src_mac": "00:12:43:3c:ba:1c",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:05.675",
+      "icd_ms": 16903.87,
+      "rounded": 17000,
+      "counter": 3
+    },
+    {
+      "packet_no": 84,
+      "protocol": "ARP",
+      "src_mac": "00:12:43:3c:ba:1c",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:05.686",
+      "icd_ms": 16914.722,
+      "rounded": 17000,
+      "counter": 4
+    },
+    {
+      "packet_no": 85,
+      "protocol": "ARP",
+      "src_mac": "d0:ea:11:27:72:4f",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:05.778",
+      "icd_ms": 17006.537,
+      "rounded": 17100,
+      "counter": 5
+    },
+    {
+      "packet_no": 86,
+      "protocol": "ARP",
+      "src_mac": "d0:ea:11:27:72:4f",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:06.762",
+      "icd_ms": 17989.924,
+      "rounded": 18000,
+      "counter": 6
+    },
+    {
+      "packet_no": 87,
+      "protocol": "ARP",
+      "src_mac": "c8:22:02:4b:c6:ff",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:06.778",
+      "icd_ms": 18006.49,
+      "rounded": 18100,
+      "counter": 7
+    },
+    {
+      "packet_no": 88,
+      "protocol": "ARP",
+      "src_mac": "d0:ea:11:27:72:4f",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:06.805",
+      "icd_ms": 18032.942,
+      "rounded": 18100,
+      "counter": 8
+    },
+    {
+      "packet_no": 89,
+      "protocol": "ARP",
+      "src_mac": "d0:ea:11:27:72:4f",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:07.619",
+      "icd_ms": 18848.644,
+      "rounded": 18900,
+      "counter": 9
+    },
+    {
+      "packet_no": 90,
+      "protocol": "ARP",
+      "src_mac": "c8:22:02:4b:c6:76",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:07.735",
+      "icd_ms": 18963.3,
+      "rounded": 19000,
+      "counter": 10
+    },
+    {
+      "packet_no": 91,
+      "protocol": "ARP",
+      "src_mac": "c8:22:02:4b:c6:e3",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:07.737",
+      "icd_ms": 18965.543,
+      "rounded": 19000,
+      "counter": 11
+    },
+    {
+      "packet_no": 92,
+      "protocol": "ARP",
+      "src_mac": "c8:22:02:4b:c6:c9",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:07.738",
+      "icd_ms": 18966.645,
+      "rounded": 19000,
+      "counter": 12
+    },
+    {
+      "packet_no": 93,
+      "protocol": "ARP",
+      "src_mac": "00:12:43:3c:ba:1c",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:07.739",
+      "icd_ms": 18967.515,
+      "rounded": 19000,
+      "counter": 13
+    },
+    {
+      "packet_no": 94,
+      "protocol": "ARP",
+      "src_mac": "d0:ea:11:27:72:4f",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:07.842",
+      "icd_ms": 19070.483,
+      "rounded": 19100,
+      "counter": 14
+    },
+    {
+      "packet_no": 95,
+      "protocol": "ARP",
+      "src_mac": "d0:ea:11:27:72:4f",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:08.091",
+      "icd_ms": 19319.467,
+      "rounded": 19400,
+      "counter": 15
+    },
+    {
+      "packet_no": 96,
+      "protocol": "ARP",
+      "src_mac": "d0:ea:11:27:72:4f",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:08.645",
+      "icd_ms": 19873.285,
+      "rounded": 19900,
+      "counter": 16
+    },
+    {
+      "packet_no": 97,
+      "protocol": "ARP",
+      "src_mac": "00:12:43:3c:ba:1c",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:08.851",
+      "icd_ms": 20079.948,
+      "rounded": 20100,
+      "counter": 1
+    },
+    {
+      "packet_no": 98,
+      "protocol": "ARP",
+      "src_mac": "d0:ea:11:27:72:4f",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:09.600",
+      "icd_ms": 20829.013,
+      "rounded": 20900,
+      "counter": 2
+    },
+    {
+      "packet_no": 99,
+      "protocol": "ARP",
+      "src_mac": "d0:ea:11:27:72:4f",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:09.702",
+      "icd_ms": 20929.783,
+      "rounded": 21000,
+      "counter": 3
+    },
+    {
+      "packet_no": 100,
+      "protocol": "ARP",
+      "src_mac": "d0:ea:11:27:72:4f",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:09.898",
+      "icd_ms": 21126.944,
+      "rounded": 21200,
+      "counter": 4
+    },
+    {
+      "packet_no": 101,
+      "protocol": "ARP",
+      "src_mac": "c8:22:02:4b:c6:cc",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:09.916",
+      "icd_ms": 21144.339,
+      "rounded": 21200,
+      "counter": 5
+    },
+    {
+      "packet_no": 102,
+      "protocol": "ARP",
+      "src_mac": "c8:22:02:4b:c6:b7",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:09.916",
+      "icd_ms": 21144.872,
+      "rounded": 21200,
+      "counter": 6
+    },
+    {
+      "packet_no": 103,
+      "protocol": "ARP",
+      "src_mac": "00:12:43:3c:ba:1c",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:09.932",
+      "icd_ms": 21160.564,
+      "rounded": 21200,
+      "counter": 7
+    },
+    {
+      "packet_no": 104,
+      "protocol": "ARP",
+      "src_mac": "d0:ea:11:27:72:4f",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:09.985",
+      "icd_ms": 21213.746,
+      "rounded": 21300,
+      "counter": 8
+    },
+    {
+      "packet_no": 105,
+      "protocol": "ARP",
+      "src_mac": "d0:ea:11:27:72:4f",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:10.068",
+      "icd_ms": 21297.024,
+      "rounded": 21300,
+      "counter": 9
+    },
+    {
+      "packet_no": 106,
+      "protocol": "ARP",
+      "src_mac": "d0:ea:11:27:72:4f",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:10.687",
+      "icd_ms": 21915.021,
+      "rounded": 22000,
+      "counter": 10
+    },
+    {
+      "packet_no": 107,
+      "protocol": "ARP",
+      "src_mac": "c8:22:02:4b:c6:86",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:10.799",
+      "icd_ms": 22027.483,
+      "rounded": 22100,
+      "counter": 11
+    },
+    {
+      "packet_no": 108,
+      "protocol": "ARP",
+      "src_mac": "c8:22:02:4b:c6:7a",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:10.801",
+      "icd_ms": 22029.859,
+      "rounded": 22100,
+      "counter": 12
+    },
+    {
+      "packet_no": 109,
+      "protocol": "ARP",
+      "src_mac": "d0:ea:11:27:72:4f",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:10.804",
+      "icd_ms": 22032.809,
+      "rounded": 22100,
+      "counter": 13
+    },
+    {
+      "packet_no": 110,
+      "protocol": "ARP",
+      "src_mac": "00:12:43:3c:ba:1c",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:10.922",
+      "icd_ms": 22150.057,
+      "rounded": 22200,
+      "counter": 14
+    },
+    {
+      "packet_no": 111,
+      "protocol": "ARP",
+      "src_mac": "00:12:43:3c:ba:1c",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:10.922",
+      "icd_ms": 22150.643,
+      "rounded": 22200,
+      "counter": 15
+    },
+    {
+      "packet_no": 112,
+      "protocol": "ARP",
+      "src_mac": "d0:ea:11:27:72:4f",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:10.923",
+      "icd_ms": 22151.447,
+      "rounded": 22200,
+      "counter": 16
+    },
+    {
+      "packet_no": 113,
+      "protocol": "ARP",
+      "src_mac": "d0:ea:11:27:72:4f",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:11.816",
+      "icd_ms": 23044.899,
+      "rounded": 23100,
+      "counter": 1
+    },
+    {
+      "packet_no": 114,
+      "protocol": "ARP",
+      "src_mac": "d0:ea:11:27:72:4f",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:11.930",
+      "icd_ms": 23158.624,
+      "rounded": 23200,
+      "counter": 2
+    },
+    {
+      "packet_no": 115,
+      "protocol": "ARP",
+      "src_mac": "00:12:43:3c:ba:1c",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:11.931",
+      "icd_ms": 23159.589,
+      "rounded": 23200,
+      "counter": 3
+    },
+    {
+      "packet_no": 116,
+      "protocol": "ARP",
+      "src_mac": "00:12:43:3c:ba:1c",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:11.932",
+      "icd_ms": 23160.385,
+      "rounded": 23200,
+      "counter": 4
+    },
+    {
+      "packet_no": 117,
+      "protocol": "ARP",
+      "src_mac": "d0:ea:11:27:72:4f",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:12.033",
+      "icd_ms": 23261.127,
+      "rounded": 23300,
+      "counter": 5
+    },
+    {
+      "packet_no": 118,
+      "protocol": "ARP",
+      "src_mac": "80:e4:ba:18:97:e1",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:12.443",
+      "icd_ms": 23672.133,
+      "rounded": 23700,
+      "counter": 6
+    },
+    {
+      "packet_no": 119,
+      "protocol": "ARP",
+      "src_mac": "d0:ea:11:27:72:4f",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:12.853",
+      "icd_ms": 24080.951,
+      "rounded": 24100,
+      "counter": 7
+    },
+    {
+      "packet_no": 120,
+      "protocol": "ARP",
+      "src_mac": "d0:ea:11:27:72:4f",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:12.950",
+      "icd_ms": 24177.762,
+      "rounded": 24200,
+      "counter": 8
+    },
+    {
+      "packet_no": 121,
+      "protocol": "ARP",
+      "src_mac": "00:12:43:3c:ba:1c",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:12.960",
+      "icd_ms": 24188.512,
+      "rounded": 24200,
+      "counter": 9
+    },
+    {
+      "packet_no": 122,
+      "protocol": "ARP",
+      "src_mac": "00:12:43:3c:ba:1c",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:12.962",
+      "icd_ms": 24190.613,
+      "rounded": 24200,
+      "counter": 10
+    },
+    {
+      "packet_no": 123,
+      "protocol": "ARP",
+      "src_mac": "d0:ea:11:27:72:4f",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:13.051",
+      "icd_ms": 24279.68,
+      "rounded": 24300,
+      "counter": 11
+    },
+    {
+      "packet_no": 124,
+      "protocol": "ARP",
+      "src_mac": "d0:ea:11:27:72:4f",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:13.980",
+      "icd_ms": 25208.17,
+      "rounded": 25300,
+      "counter": 12
+    },
+    {
+      "packet_no": 125,
+      "protocol": "ARP",
+      "src_mac": "00:12:43:3c:ba:1c",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:13.981",
+      "icd_ms": 25209.13,
+      "rounded": 25300,
+      "counter": 13
+    },
+    {
+      "packet_no": 126,
+      "protocol": "ARP",
+      "src_mac": "d0:ea:11:27:72:4f",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:14.083",
+      "icd_ms": 25311.747,
+      "rounded": 25400,
+      "counter": 14
+    },
+    {
+      "packet_no": 127,
+      "protocol": "ARP",
+      "src_mac": "d0:ea:11:27:72:4f",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:14.903",
+      "icd_ms": 26132.2,
+      "rounded": 26200,
+      "counter": 15
+    },
+    {
+      "packet_no": 128,
+      "protocol": "ARP",
+      "src_mac": "d0:ea:11:27:72:4f",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:15.107",
+      "icd_ms": 26335.129,
+      "rounded": 26400,
+      "counter": 16
+    },
+    {
+      "packet_no": 129,
+      "protocol": "ARP",
+      "src_mac": "c8:22:02:4b:c6:d3",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:15.914",
+      "icd_ms": 27142.739,
+      "rounded": 27200,
+      "counter": 1
+    },
+    {
+      "packet_no": 130,
+      "protocol": "ARP",
+      "src_mac": "c8:22:02:4b:c6:c1",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:15.917",
+      "icd_ms": 27145.192,
+      "rounded": 27200,
+      "counter": 2
+    },
+    {
+      "packet_no": 131,
+      "protocol": "ARP",
+      "src_mac": "d0:ea:11:27:72:4f",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:16.035",
+      "icd_ms": 27263.652,
+      "rounded": 27300,
+      "counter": 3
+    },
+    {
+      "packet_no": 132,
+      "protocol": "ARP",
+      "src_mac": "00:12:43:3c:ba:1c",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:16.140",
+      "icd_ms": 27367.945,
+      "rounded": 27400,
+      "counter": 4
+    },
+    {
+      "packet_no": 133,
+      "protocol": "ARP",
+      "src_mac": "54:16:51:3b:cb:e6",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:16.141",
+      "icd_ms": 27368.967,
+      "rounded": 27400,
+      "counter": 5
+    },
+    {
+      "packet_no": 134,
+      "protocol": "ARP",
+      "src_mac": "d0:ea:11:27:72:4f",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:16.141",
+      "icd_ms": 27369.751,
+      "rounded": 27400,
+      "counter": 6
+    },
+    {
+      "packet_no": 135,
+      "protocol": "ARP",
+      "src_mac": "d0:ea:11:27:72:4f",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:16.231",
+      "icd_ms": 27459.175,
+      "rounded": 27500,
+      "counter": 7
+    },
+    {
+      "packet_no": 136,
+      "protocol": "ARP",
+      "src_mac": "c8:22:02:4b:c6:ff",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:17.462",
+      "icd_ms": 28690.27,
+      "rounded": 28700,
+      "counter": 8
+    },
+    {
+      "packet_no": 137,
+      "protocol": "ARP",
+      "src_mac": "d0:ea:11:27:72:4f",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:17.469",
+      "icd_ms": 28697.435,
+      "rounded": 28700,
+      "counter": 9
+    },
+    {
+      "packet_no": 138,
+      "protocol": "ARP",
+      "src_mac": "00:12:43:3c:ba:1c",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:17.470",
+      "icd_ms": 28698.456,
+      "rounded": 28700,
+      "counter": 10
+    },
+    {
+      "packet_no": 139,
+      "protocol": "ARP",
+      "src_mac": "d0:ea:11:27:72:4f",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:17.471",
+      "icd_ms": 28699.573,
+      "rounded": 28700,
+      "counter": 11
+    },
+    {
+      "packet_no": 140,
+      "protocol": "ARP",
+      "src_mac": "d0:ea:11:27:72:4f",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:17.486",
+      "icd_ms": 28715.132,
+      "rounded": 28800,
+      "counter": 12
+    },
+    {
+      "packet_no": 141,
+      "protocol": "ARP",
+      "src_mac": "c8:22:02:4b:c6:c9",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:17.971",
+      "icd_ms": 29199.89,
+      "rounded": 29200,
+      "counter": 13
+    },
+    {
+      "packet_no": 142,
+      "protocol": "ARP",
+      "src_mac": "c8:22:02:4b:c6:e3",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:17.983",
+      "icd_ms": 29211.381,
+      "rounded": 29300,
+      "counter": 14
+    },
+    {
+      "packet_no": 143,
+      "protocol": "ARP",
+      "src_mac": "d0:ea:11:27:72:4f",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:18.081",
+      "icd_ms": 29310.223,
+      "rounded": 29400,
+      "counter": 15
+    },
+    {
+      "packet_no": 144,
+      "protocol": "ARP",
+      "src_mac": "d0:ea:11:27:72:4f",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:18.082",
+      "icd_ms": 29311.223,
+      "rounded": 29400,
+      "counter": 16
+    },
+    {
+      "packet_no": 145,
+      "protocol": "ARP",
+      "src_mac": "00:12:43:3c:ba:1c",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:18.165",
+      "icd_ms": 29393.76,
+      "rounded": 29400,
+      "counter": 1
+    },
+    {
+      "packet_no": 146,
+      "protocol": "ARP",
+      "src_mac": "d0:ea:11:27:72:4f",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:18.272",
+      "icd_ms": 29501.052,
+      "rounded": 29600,
+      "counter": 2
+    },
+    {
+      "packet_no": 147,
+      "protocol": "ARP",
+      "src_mac": "d0:ea:11:27:72:4f",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:18.383",
+      "icd_ms": 29611.938,
+      "rounded": 29700,
+      "counter": 3
+    },
+    {
+      "packet_no": 148,
+      "protocol": "ARP",
+      "src_mac": "d0:ea:11:27:72:4f",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:18.486",
+      "icd_ms": 29714.199,
+      "rounded": 29800,
+      "counter": 4
+    },
+    {
+      "packet_no": 149,
+      "protocol": "ARP",
+      "src_mac": "c8:22:02:4b:c6:e7",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:18.986",
+      "icd_ms": 30214.567,
+      "rounded": 30300,
+      "counter": 5
+    },
+    {
+      "packet_no": 150,
+      "protocol": "ARP",
+      "src_mac": "c8:22:02:4b:c6:76",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:18.988",
+      "icd_ms": 30216.33,
+      "rounded": 30300,
+      "counter": 6
+    },
+    {
+      "packet_no": 151,
+      "protocol": "ARP",
+      "src_mac": "d0:ea:11:27:72:4f",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:19.100",
+      "icd_ms": 30328.6,
+      "rounded": 30400,
+      "counter": 7
+    },
+    {
+      "packet_no": 152,
+      "protocol": "ARP",
+      "src_mac": "d0:ea:11:27:72:4f",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:19.101",
+      "icd_ms": 30329.787,
+      "rounded": 30400,
+      "counter": 8
+    },
+    {
+      "packet_no": 153,
+      "protocol": "ARP",
+      "src_mac": "00:12:43:3c:ba:1c",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:19.197",
+      "icd_ms": 30425.005,
+      "rounded": 30500,
+      "counter": 9
+    },
+    {
+      "packet_no": 154,
+      "protocol": "ARP",
+      "src_mac": "d0:ea:11:27:72:4f",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:19.301",
+      "icd_ms": 30529.52,
+      "rounded": 30600,
+      "counter": 10
+    },
+    {
+      "packet_no": 155,
+      "protocol": "ARP",
+      "src_mac": "80:e4:ba:18:97:e1",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:19.410",
+      "icd_ms": 30638.839,
+      "rounded": 30700,
+      "counter": 11
+    },
+    {
+      "packet_no": 156,
+      "protocol": "ARP",
+      "src_mac": "80:e4:ba:18:97:e1",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:19.411",
+      "icd_ms": 30639.788,
+      "rounded": 30700,
+      "counter": 12
+    },
+    {
+      "packet_no": 157,
+      "protocol": "ARP",
+      "src_mac": "80:e4:ba:18:97:e1",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:19.411",
+      "icd_ms": 30640.587,
+      "rounded": 30700,
+      "counter": 13
+    },
+    {
+      "packet_no": 158,
+      "protocol": "ARP",
+      "src_mac": "d0:ea:11:27:72:4f",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:19.613",
+      "icd_ms": 30842.456,
+      "rounded": 30900,
+      "counter": 14
+    },
+    {
+      "packet_no": 159,
+      "protocol": "ARP",
+      "src_mac": "d0:ea:11:27:72:4f",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:20.020",
+      "icd_ms": 31248.715,
+      "rounded": 31300,
+      "counter": 15
+    },
+    {
+      "packet_no": 160,
+      "protocol": "ARP",
+      "src_mac": "c8:22:02:4b:c6:b7",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:20.021",
+      "icd_ms": 31249.705,
+      "rounded": 31300,
+      "counter": 16
+    },
+    {
+      "packet_no": 161,
+      "protocol": "ARP",
+      "src_mac": "c8:22:02:4b:c6:cc",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:20.022",
+      "icd_ms": 31250.537,
+      "rounded": 31300,
+      "counter": 1
+    },
+    {
+      "packet_no": 162,
+      "protocol": "ARP",
+      "src_mac": "e0:bb:9e:f4:a0:c6",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:20.118",
+      "icd_ms": 31346.342,
+      "rounded": 31400,
+      "counter": 2
+    },
+    {
+      "packet_no": 163,
+      "protocol": "ARP",
+      "src_mac": "d0:ea:11:27:72:4f",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:20.119",
+      "icd_ms": 31347.703,
+      "rounded": 31400,
+      "counter": 3
+    },
+    {
+      "packet_no": 164,
+      "protocol": "ARP",
+      "src_mac": "d0:ea:11:27:72:4f",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:20.217",
+      "icd_ms": 31445.943,
+      "rounded": 31500,
+      "counter": 4
+    },
+    {
+      "packet_no": 165,
+      "protocol": "ARP",
+      "src_mac": "d0:ea:11:27:72:4f",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:20.327",
+      "icd_ms": 31555.491,
+      "rounded": 31600,
+      "counter": 5
+    },
+    {
+      "packet_no": 166,
+      "protocol": "ARP",
+      "src_mac": "d0:ea:11:27:72:4f",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:20.638",
+      "icd_ms": 31866.115,
+      "rounded": 31900,
+      "counter": 6
+    },
+    {
+      "packet_no": 167,
+      "protocol": "ARP",
+      "src_mac": "d0:ea:11:27:72:4f",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:21.043",
+      "icd_ms": 32272.084,
+      "rounded": 32300,
+      "counter": 7
+    },
+    {
+      "packet_no": 168,
+      "protocol": "ARP",
+      "src_mac": "c8:22:02:4b:c6:86",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:21.044",
+      "icd_ms": 32273.045,
+      "rounded": 32300,
+      "counter": 8
+    },
+    {
+      "packet_no": 169,
+      "protocol": "ARP",
+      "src_mac": "c8:22:02:4b:c6:7a",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:21.054",
+      "icd_ms": 32282.882,
+      "rounded": 32300,
+      "counter": 9
+    },
+    {
+      "packet_no": 170,
+      "protocol": "ARP",
+      "src_mac": "d0:ea:11:27:72:4f",
+      "src_ip": null,
+      "timestamp": "2026-10-21T14:25:21.142",
+      "icd_ms": 32370.999,
+      "rounded": 32400,
+      "counter": 10
+    }
+  ]
+}
