@@ -5,25 +5,25 @@
   "counters": [
     {
       "session_id": "d42b63d44e864fdfaca5cba2917d58c0",
-      "packet_no": 86,
+      "packet_no": 98,
       "protocol": "SSDP",
-      "src_mac": "08:5b:d6:f0:0f:4b",
+      "src_mac": "10:91:d1:ef:ef:9d",
       "dst_mac": "01:00:5e:7f:ff:fa",
-      "src_ip": "10.10.10.4",
-      "timestamp": "2026-11-07T17:19:53.930",
-      "counter": 6,
-      "counter_bits": "1101"
+      "src_ip": "10.10.10.3",
+      "timestamp": "2026-11-07T17:21:17.024",
+      "counter": 2,
+      "counter_bits": "1111"
     },
     {
       "session_id": "d42b63d44e864fdfaca5cba2917d58c0",
-      "packet_no": 85,
+      "packet_no": 97,
       "protocol": "SSDP",
-      "src_mac": "08:5b:d6:f0:0f:4b",
+      "src_mac": "10:91:d1:ef:ef:9d",
       "dst_mac": "01:00:5e:7f:ff:fa",
-      "src_ip": "10.10.10.4",
-      "timestamp": "2026-11-07T17:19:53.917",
-      "counter": 5,
-      "counter_bits": "0010"
+      "src_ip": "10.10.10.3",
+      "timestamp": "2026-11-07T17:21:16.961",
+      "counter": 1,
+      "counter_bits": "0000"
     }
   ]
 }

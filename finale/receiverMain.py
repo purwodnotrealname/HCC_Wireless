@@ -46,7 +46,21 @@ def choose_pointer_source_ip():
             print("Invalid IPv4 address. Enter the sender's interface address.")
 
 
+def choose_poi_mode():
+    print("Select the packet-of-interest (PoI) mode:")
+    print("  [1] Legacy (ARP, DHCP, mDNS, and SSDP)")
+    print("  [2] ARP only (mDNS pointer packets are still recognized)")
+    while True:
+        choice = input("Choose PoI mode [1/2]: ").strip()
+        if choice == "1":
+            return "legacy"
+        if choice == "2":
+            return "arp"
+        print("Invalid selection. Enter 1 or 2.")
+
+
 def main():
+    poi_mode = choose_poi_mode()
     iface = choose_interface()
     pointer_source_ip = choose_pointer_source_ip()
     receiver = ReceiverHistoryExtractor(
@@ -55,6 +69,7 @@ def main():
         log_path=LOG_FILE,
         secret_bits_path=SECRET_BITS_FILE,
         pointer_source_ip=pointer_source_ip,
+        poi_mode=poi_mode,
     )
 
     try:

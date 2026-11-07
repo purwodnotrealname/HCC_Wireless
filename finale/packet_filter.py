@@ -20,8 +20,13 @@ CAPTURE_FILTER = (
     f"({ARP_BROADCAST_FILTER} or {DHCP_FILTER} or "
     f"{MDNS_FILTER} or {SSDP_FILTER})"
 )
+ARP_ONLY_CAPTURE_FILTER = "arp"
 
 
-def get_packet_filter():
-    """Return the testEnv protocol filter, excluding Ethernet unicast."""
-    return CAPTURE_FILTER
+def get_packet_filter(poi_mode="legacy"):
+    """Return the sender filter for legacy or ARP-only PoI packets."""
+    if poi_mode == "legacy":
+        return CAPTURE_FILTER
+    if poi_mode == "arp":
+        return ARP_ONLY_CAPTURE_FILTER
+    raise ValueError(f"Unsupported PoI mode: {poi_mode}")

@@ -28,6 +28,7 @@ class ICDExtractor:
         on_match=None,
         ignore_packet=None,
         matched_only_output=False,
+        poi_mode="legacy",
     ):
         self.iface = iface
         self._t0_perf_counter = None
@@ -40,6 +41,9 @@ class ICDExtractor:
         self.on_match = on_match
         self.ignore_packet = ignore_packet
         self.matched_only_output = matched_only_output
+        if poi_mode not in ("legacy", "arp"):
+            raise ValueError(f"Unsupported PoI mode: {poi_mode}")
+        self.poi_mode = poi_mode
         self._queue = queue.Queue()
         self._worker = None
         self._counter_state = CounterState()
@@ -56,9 +60,13 @@ class ICDExtractor:
         if self.ignore_packet is not None and self.ignore_packet(pkt):
             return None
 
-        if not pkt.haslayer(Ether) or not self._is_group_destination(
-            pkt[Ether].dst
-        ):
+        if not pkt.haslayer(Ether):
+            return None
+
+        if self.poi_mode == "arp":
+            return "ARP" if pkt.haslayer(ARP) else None
+
+        if not self._is_group_destination(pkt[Ether].dst):
             return None
 
         if pkt.haslayer(ARP):
@@ -139,6 +147,7 @@ class ICDExtractor:
                     record = {
                         "packet_no": self.packet_count,
                         "protocol": proto,
+                        "poi_mode": self.poi_mode,
                         "src_mac": src_mac,
                         "dst_mac": dst_mac,
                         "src_ip": src_ip,
@@ -225,10 +234,14 @@ class ICDExtractor:
                 )
                 print(f"Npcap capture ID: {self.iface}", flush=True)
             print(
-                "Listening only for group-destination ARP, DHCP, mDNS, and SSDP.",
+                "PoI mode: "
+                + ("ARP only" if self.poi_mode == "arp" else "legacy (ARP/DHCP/mDNS/SSDP)"),
                 flush=True,
             )
-            print(f"Capture filter: {get_packet_filter()}", flush=True)
+            print(
+                f"Capture filter: {get_packet_filter(self.poi_mode)}",
+                flush=True,
+            )
             if self.matcher is not None:
                 print(f"Bit matching aktif: {len(self.matcher.windows)} window "
                       f"({self.matcher.window_size} bit/window) match.", flush=True)
@@ -241,7 +254,7 @@ class ICDExtractor:
         started = threading.Event()
         sniffer = AsyncSniffer(
             iface=self.iface,
-            filter=get_packet_filter(),
+            filter=get_packet_filter(self.poi_mode),
             prn=self._on_sniff_packet,
             store=False,
             started_callback=started.set,
@@ -271,7 +284,7 @@ class ICDExtractor:
                 if not self.matched_only_output:
                     print(
                         f"Capture received {self.captured_packet_count} "
-                        f"broadcast/multicast frame(s); "
+                        f"frame(s); "
                         f"{self.packet_count} were used for counters.",
                         flush=True,
                     )
@@ -279,6 +292,12 @@ class ICDExtractor:
     def save_json(self, filepath="history_results.json", verbose=True):
         output = {
             "interface": self.iface,
+            "poi_mode": self.poi_mode,
+            "poi_definition": (
+                "all ARP packets"
+                if self.poi_mode == "arp"
+                else "group-destination ARP, DHCP, mDNS, and SSDP packets"
+            ),
             "initialization_time": self.t0_wallclock,
             "total_packets": self.packet_count,
             "packets": self.records,

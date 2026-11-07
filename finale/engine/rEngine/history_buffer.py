@@ -51,6 +51,7 @@ class ReceiverHistoryStore:
                 "session_id": record.get("session_id"),
                 "packet_no": record.get("packet_no"),
                 "protocol": record.get("protocol"),
+                "poi_mode": record.get("poi_mode"),
                 "src_mac": record.get("src_mac"),
                 "dst_mac": record.get("dst_mac"),
                 "src_ip": record.get("src_ip"),

@@ -37,8 +37,14 @@ CAPTURE_FILTER = (
 )
 
 
-def get_packet_filter():
-    return CAPTURE_FILTER
+def get_packet_filter(poi_mode="legacy"):
+    if poi_mode == "legacy":
+        return CAPTURE_FILTER
+    if poi_mode == "arp":
+        # Keep mDNS available for pointer recognition, but exclude it from
+        # history counters in _classify().
+        return f"(arp or {MDNS_FILTER})"
+    raise ValueError(f"Unsupported PoI mode: {poi_mode}")
 
 
 def list_interfaces():
@@ -81,11 +87,15 @@ class ReceiverHistoryExtractor:
         log_path,
         secret_bits_path,
         pointer_source_ip,
+        poi_mode="legacy",
     ):
         self.iface = iface
         self.store = ReceiverHistoryStore(buffer_path, log_path)
         self.secret_bits_store = ReceiverSecretBitsStore(secret_bits_path)
         self.pointer_recognizer = PointerRecognizer(pointer_source_ip)
+        if poi_mode not in ("legacy", "arp"):
+            raise ValueError(f"Unsupported PoI mode: {poi_mode}")
+        self.poi_mode = poi_mode
         self.session_id = uuid.uuid4().hex
         self.packet_count = 0
         self.captured_packet_count = 0
@@ -113,9 +123,13 @@ class ReceiverHistoryExtractor:
         return src_mac, dst_mac, src_ip
 
     def _classify(self, pkt):
-        if not pkt.haslayer(Ether) or not self._is_group_destination(
-            pkt[Ether].dst
-        ):
+        if not pkt.haslayer(Ether):
+            return None
+
+        if self.poi_mode == "arp":
+            return "ARP" if pkt.haslayer(ARP) else None
+
+        if not self._is_group_destination(pkt[Ether].dst):
             return None
 
         if pkt.haslayer(ARP):
@@ -199,6 +213,7 @@ class ReceiverHistoryExtractor:
                         "session_id": self.session_id,
                         "packet_no": self.packet_count,
                         "protocol": str(proto),
+                        "poi_mode": self.poi_mode,
                         "src_mac": src_mac,
                         "dst_mac": dst_mac,
                         "src_ip": src_ip,
@@ -230,10 +245,11 @@ class ReceiverHistoryExtractor:
             )
             print(f"Npcap capture ID: {self.iface}", flush=True)
         print(
-            "Listening only for group-destination ARP, DHCP, mDNS, and SSDP.",
+            "PoI mode: "
+            + ("ARP only" if self.poi_mode == "arp" else "legacy (ARP/DHCP/mDNS/SSDP)"),
             flush=True,
         )
-        print(f"Capture filter: {get_packet_filter()}", flush=True)
+        print(f"Capture filter: {get_packet_filter(self.poi_mode)}", flush=True)
         print(
             f"Pointer source IPv4: {self.pointer_recognizer.sender_ip}",
             flush=True,
@@ -250,7 +266,7 @@ class ReceiverHistoryExtractor:
         started = threading.Event()
         sniffer = AsyncSniffer(
             iface=self.iface,
-            filter=get_packet_filter(),
+            filter=get_packet_filter(self.poi_mode),
             prn=self._on_sniff_packet,
             store=False,
             started_callback=started.set,
@@ -277,7 +293,7 @@ class ReceiverHistoryExtractor:
 
             print(
                 f"Capture received {self.captured_packet_count} "
-                f"broadcast/multicast frame(s); "
+                f"frame(s); "
                 f"{self.packet_count} produced counter values.",
                 flush=True,
             )

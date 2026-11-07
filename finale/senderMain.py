@@ -40,7 +40,12 @@ def save_poi_addresses_json(
         })
 
     output = {
-        "poi_definition": "packets that matched a message window",
+        "poi_mode": extractor.poi_mode,
+        "poi_definition": (
+            "matched ARP packets only"
+            if extractor.poi_mode == "arp"
+            else "matched packets from legacy group-destination ARP/DHCP/mDNS/SSDP capture"
+        ),
         "total_poi_packets": len(poi_packets),
         "packets": poi_packets,
     }
@@ -63,6 +68,19 @@ def choose_sender_mode():
             return "legacy"
         if choice == "2":
             return "silent"
+        print("Invalid selection. Enter 1 or 2.")
+
+
+def choose_poi_mode():
+    print("Select the packet-of-interest (PoI) mode:")
+    print("  [1] Legacy (ARP, DHCP, mDNS, and SSDP)")
+    print("  [2] ARP only")
+    while True:
+        choice = input("Choose PoI mode [1/2]: ").strip()
+        if choice == "1":
+            return "legacy"
+        if choice == "2":
+            return "arp"
         print("Invalid selection. Enter 1 or 2.")
 
 
@@ -106,6 +124,7 @@ def choose_interface():
 
 def main():
     mode = choose_sender_mode()
+    poi_mode = choose_poi_mode()
     message_value, message_bit_length, message_bits = choose_message_bits()
     iface = choose_interface()
 
@@ -126,6 +145,7 @@ def main():
         on_match=signal_sender.send_for_match,
         ignore_packet=signal_sender.is_own_signal,
         matched_only_output=(mode == "silent"),
+        poi_mode=poi_mode,
     )
 
     try:
