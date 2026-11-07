@@ -1,4 +1,5 @@
 import json
+import math
 import sys
 
 from engine.sEngine.history_extract import (
@@ -41,11 +42,12 @@ def save_poi_addresses_json(
 
     output = {
         "poi_mode": extractor.poi_mode,
-        "poi_definition": (
-            "matched ARP packets only"
-            if extractor.poi_mode == "arp"
-            else "matched packets from legacy group-destination ARP/DHCP/mDNS/SSDP capture"
-        ),
+        "silent_interval_ms": extractor.silent_interval_ms,
+        "poi_definition": {
+            "arp": "matched ARP packets only",
+            "ssdp": "matched group-destination SSDP packets only",
+            "legacy": "matched packets from legacy group-destination ARP/DHCP/mDNS/SSDP capture",
+        }[extractor.poi_mode],
         "total_poi_packets": len(poi_packets),
         "packets": poi_packets,
     }
@@ -75,13 +77,39 @@ def choose_poi_mode():
     print("Select the packet-of-interest (PoI) mode:")
     print("  [1] Legacy (ARP, DHCP, mDNS, and SSDP)")
     print("  [2] ARP only")
+    print("  [3] SSDP only")
     while True:
-        choice = input("Choose PoI mode [1/2]: ").strip()
+        choice = input("Choose PoI mode [1/2/3]: ").strip()
         if choice == "1":
             return "legacy"
         if choice == "2":
             return "arp"
-        print("Invalid selection. Enter 1 or 2.")
+        if choice == "3":
+            return "ssdp"
+        print("Invalid selection. Enter 1, 2, or 3.")
+
+
+def choose_silent_interval():
+    while True:
+        enabled = input(
+            "Enable silent interval race guard? [y/N]: "
+        ).strip().lower()
+        if enabled in ("", "n", "no"):
+            return None
+        if enabled in ("y", "yes"):
+            break
+        print("Enter y or n.")
+
+    while True:
+        value = input("Silent interval threshold in milliseconds: ").strip()
+        try:
+            interval_ms = float(value)
+        except ValueError:
+            print("Enter a positive number of milliseconds.")
+            continue
+        if math.isfinite(interval_ms) and interval_ms > 0:
+            return interval_ms
+        print("Enter a positive finite number of milliseconds.")
 
 
 def choose_message_bits():
@@ -125,6 +153,7 @@ def choose_interface():
 def main():
     mode = choose_sender_mode()
     poi_mode = choose_poi_mode()
+    silent_interval_ms = choose_silent_interval()
     message_value, message_bit_length, message_bits = choose_message_bits()
     iface = choose_interface()
 
@@ -146,6 +175,7 @@ def main():
         ignore_packet=signal_sender.is_own_signal,
         matched_only_output=(mode == "silent"),
         poi_mode=poi_mode,
+        silent_interval_ms=silent_interval_ms,
     )
 
     try:

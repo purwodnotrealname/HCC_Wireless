@@ -1,4 +1,5 @@
 import json
+import math
 import queue
 import threading
 import time
@@ -29,6 +30,7 @@ class ICDExtractor:
         ignore_packet=None,
         matched_only_output=False,
         poi_mode="legacy",
+        silent_interval_ms=None,
     ):
         self.iface = iface
         self._t0_perf_counter = None
@@ -41,9 +43,21 @@ class ICDExtractor:
         self.on_match = on_match
         self.ignore_packet = ignore_packet
         self.matched_only_output = matched_only_output
-        if poi_mode not in ("legacy", "arp"):
+        if poi_mode not in ("legacy", "arp", "ssdp"):
             raise ValueError(f"Unsupported PoI mode: {poi_mode}")
         self.poi_mode = poi_mode
+        if silent_interval_ms is not None and (
+            not math.isfinite(float(silent_interval_ms))
+            or float(silent_interval_ms) <= 0
+        ):
+            raise ValueError("silent_interval_ms must be a positive finite number")
+        self.silent_interval_ms = (
+            float(silent_interval_ms)
+            if silent_interval_ms is not None
+            else None
+        )
+        self._last_pointer_sent_perf_counter = None
+        self.silent_interval_dropped_packets = []
         self._queue = queue.Queue()
         self._worker = None
         self._counter_state = CounterState()
@@ -68,6 +82,11 @@ class ICDExtractor:
 
         if not self._is_group_destination(pkt[Ether].dst):
             return None
+
+        if self.poi_mode == "ssdp":
+            return "SSDP" if (
+                pkt.haslayer(UDP) and pkt[UDP].dport == SSDP_PORT
+            ) else None
 
         if pkt.haslayer(ARP):
             return "ARP" if pkt[Ether].dst.lower() == BROADCAST_MAC else None
@@ -112,6 +131,37 @@ class ICDExtractor:
                     if proto is None:
                         continue
                     proto = str(proto)
+
+                    if self._last_pointer_sent_perf_counter is not None:
+                        delta_ms = (
+                            arrival_perf_counter
+                            - self._last_pointer_sent_perf_counter
+                        ) * 1000
+                        if 0 <= delta_ms < self.silent_interval_ms:
+                            src_mac = pkt[Ether].src if pkt.haslayer(Ether) else None
+                            dst_mac = pkt[Ether].dst if pkt.haslayer(Ether) else None
+                            src_ip = (
+                                pkt[IP].src if pkt.haslayer(IP)
+                                else pkt[IPv6].src if pkt.haslayer(IPv6)
+                                else None
+                            )
+                            self.silent_interval_dropped_packets.append({
+                                "protocol": proto,
+                                "src_ip": src_ip,
+                                "src_mac": src_mac,
+                                "dst_mac": dst_mac,
+                                "timestamp": wallclock,
+                                "delta_from_pointer_ms": round(delta_ms, 3),
+                            })
+                            print(
+                                f"Silent interval ignored {proto} packet "
+                                f"{delta_ms:.3f} ms after pointer "
+                                f"(threshold {self.silent_interval_ms:g} ms).",
+                                flush=True,
+                            )
+                            continue
+                        if delta_ms >= self.silent_interval_ms:
+                            self._last_pointer_sent_perf_counter = None
 
                     if self._t0_perf_counter is None:
                         self._t0_perf_counter = arrival_perf_counter
@@ -213,6 +263,10 @@ class ICDExtractor:
                                     "packet": record,
                                 }
                                 self.on_match(signal_attempt)
+                                if self.silent_interval_ms is not None:
+                                    self._last_pointer_sent_perf_counter = (
+                                        time.perf_counter()
+                                    )
                             except Exception as exc:
                                 print(
                                     f"       -> pointer signal failed: {exc}",
@@ -235,7 +289,20 @@ class ICDExtractor:
                 print(f"Npcap capture ID: {self.iface}", flush=True)
             print(
                 "PoI mode: "
-                + ("ARP only" if self.poi_mode == "arp" else "legacy (ARP/DHCP/mDNS/SSDP)"),
+                + {
+                    "arp": "ARP only",
+                    "ssdp": "SSDP only",
+                    "legacy": "legacy (ARP/DHCP/mDNS/SSDP)",
+                }[self.poi_mode],
+                flush=True,
+            )
+            print(
+                "Silent interval: "
+                + (
+                    f"{self.silent_interval_ms:g} ms"
+                    if self.silent_interval_ms is not None
+                    else "disabled"
+                ),
                 flush=True,
             )
             print(
@@ -293,11 +360,15 @@ class ICDExtractor:
         output = {
             "interface": self.iface,
             "poi_mode": self.poi_mode,
-            "poi_definition": (
-                "all ARP packets"
-                if self.poi_mode == "arp"
-                else "group-destination ARP, DHCP, mDNS, and SSDP packets"
+            "silent_interval_ms": self.silent_interval_ms,
+            "silent_interval_dropped_packets": (
+                self.silent_interval_dropped_packets
             ),
+            "poi_definition": {
+                "arp": "all ARP packets",
+                "ssdp": "group-destination SSDP packets only",
+                "legacy": "group-destination ARP, DHCP, mDNS, and SSDP packets",
+            }[self.poi_mode],
             "initialization_time": self.t0_wallclock,
             "total_packets": self.packet_count,
             "packets": self.records,

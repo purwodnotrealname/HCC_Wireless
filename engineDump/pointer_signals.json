@@ -11741,6 +11741,162 @@
       },
       "wire_frame_hex": "01005e0000fb1091d1efef9d08004500013b00010000ff11c5a80a0a0a03e00000fb14e914e90127a74d00008500000100010000000003777777076578616d706c6503636f6d000001000114736632306632336433373133652d7035312d77360c5f6863632d706f696e746572045f756470056c6f63616c00001080010000007800c6126170703d6863632d706f696e7465722d76311d6576656e745f69643d736632306632336433373133652d7035312d77360c7061636b65745f6e6f3d35310e77696e646f775f696e6465783d361077696e646f775f626974733d30313131107061636b65745f626974733d3031313112636f6d70617265645f626974733d30313131156d6573736167655f6269745f6c656e6774683d32382d6d6573736167655f626974735f3030303d31313131313030313030303131313030313131303030313030313131",
       "send_status": "sent"
+    },
+    {
+      "event_id": "s997413d175f3-p2-w0",
+      "session_id": "997413d175f3",
+      "timestamp": "2026-11-07T20:06:29.601",
+      "interface": "\\Device\\NPF_{087FD757-EA4B-4CC8-B4E2-481BB410C89E}",
+      "source_ip": "10.10.10.3",
+      "source_mac": "10:91:d1:ef:ef:9d",
+      "destination_ip": "224.0.0.251",
+      "destination_port": 5353,
+      "packet_identity": {
+        "packet_no": 2,
+        "window_index": 0
+      },
+      "message_bits": "1111000011000011",
+      "message_bit_length": 16,
+      "match": {
+        "packet_no": 2,
+        "window_index": 0,
+        "window_value": 15,
+        "window_width": 4,
+        "packet_bit_value": 15,
+        "compared_value": 15,
+        "status": "matched",
+        "packet": {
+          "packet_no": 2,
+          "protocol": "ARP",
+          "poi_mode": "arp",
+          "src_mac": "f4:70:18:a3:37:96",
+          "dst_mac": "ff:ff:ff:ff:ff:ff",
+          "src_ip": null,
+          "timestamp": "2026-11-07T20:06:29.599",
+          "icd_ms": 7460.525,
+          "rounded": 7500,
+          "counter": 2
+        }
+      },
+      "wire_frame_hex": "01005e0000fb1091d1efef9d08004500012c00010000ff11c5b70a0a0a03e00000fb14e914e901184b7c00008500000100010000000003777777076578616d706c6503636f6d000001000113733939373431336431373566332d70322d77300c5f6863632d706f696e746572045f756470056c6f63616c00001080010000007800b8126170703d6863632d706f696e7465722d76311c6576656e745f69643d733939373431336431373566332d70322d77300b7061636b65745f6e6f3d320e77696e646f775f696e6465783d301077696e646f775f626974733d31313131107061636b65745f626974733d3131313112636f6d70617265645f626974733d31313131156d6573736167655f6269745f6c656e6774683d3136216d6573736167655f626974735f3030303d31313131303030303131303030303131",
+      "send_status": "sent"
+    },
+    {
+      "event_id": "s997413d175f3-p3-w1",
+      "session_id": "997413d175f3",
+      "timestamp": "2026-11-07T20:06:31.558",
+      "interface": "\\Device\\NPF_{087FD757-EA4B-4CC8-B4E2-481BB410C89E}",
+      "source_ip": "10.10.10.3",
+      "source_mac": "10:91:d1:ef:ef:9d",
+      "destination_ip": "224.0.0.251",
+      "destination_port": 5353,
+      "packet_identity": {
+        "packet_no": 3,
+        "window_index": 1
+      },
+      "message_bits": "1111000011000011",
+      "message_bit_length": 16,
+      "match": {
+        "packet_no": 3,
+        "window_index": 1,
+        "window_value": 0,
+        "window_width": 4,
+        "packet_bit_value": 0,
+        "compared_value": 0,
+        "status": "matched",
+        "packet": {
+          "packet_no": 3,
+          "protocol": "ARP",
+          "poi_mode": "arp",
+          "src_mac": "f4:70:18:a3:37:96",
+          "dst_mac": "ff:ff:ff:ff:ff:ff",
+          "src_ip": null,
+          "timestamp": "2026-11-07T20:06:31.556",
+          "icd_ms": 9418.224,
+          "rounded": 9500,
+          "counter": 1
+        }
+      },
+      "wire_frame_hex": "01005e0000fb1091d1efef9d08004500012c00010000ff11c5b70a0a0a03e00000fb14e914e901184e7f00008500000100010000000003777777076578616d706c6503636f6d000001000113733939373431336431373566332d70332d77310c5f6863632d706f696e746572045f756470056c6f63616c00001080010000007800b8126170703d6863632d706f696e7465722d76311c6576656e745f69643d733939373431336431373566332d70332d77310b7061636b65745f6e6f3d330e77696e646f775f696e6465783d311077696e646f775f626974733d30303030107061636b65745f626974733d3030303012636f6d70617265645f626974733d30303030156d6573736167655f6269745f6c656e6774683d3136216d6573736167655f626974735f3030303d31313131303030303131303030303131",
+      "send_status": "sent"
+    },
+    {
+      "event_id": "s997413d175f3-p11-w2",
+      "session_id": "997413d175f3",
+      "timestamp": "2026-11-07T20:06:48.870",
+      "interface": "\\Device\\NPF_{087FD757-EA4B-4CC8-B4E2-481BB410C89E}",
+      "source_ip": "10.10.10.3",
+      "source_mac": "10:91:d1:ef:ef:9d",
+      "destination_ip": "224.0.0.251",
+      "destination_port": 5353,
+      "packet_identity": {
+        "packet_no": 11,
+        "window_index": 2
+      },
+      "message_bits": "1111000011000011",
+      "message_bit_length": 16,
+      "match": {
+        "packet_no": 11,
+        "window_index": 2,
+        "window_value": 12,
+        "window_width": 4,
+        "packet_bit_value": 12,
+        "compared_value": 12,
+        "status": "matched",
+        "packet": {
+          "packet_no": 11,
+          "protocol": "ARP",
+          "poi_mode": "arp",
+          "src_mac": "f4:1e:57:d0:b2:11",
+          "dst_mac": "10:91:d1:ef:ef:9d",
+          "src_ip": null,
+          "timestamp": "2026-11-07T20:06:48.866",
+          "icd_ms": 26728.225,
+          "rounded": 26800,
+          "counter": 8
+        }
+      },
+      "wire_frame_hex": "01005e0000fb1091d1efef9d08004500012f00010000ff11c5b40a0a0a03e00000fb14e914e9011b929900008500000100010000000003777777076578616d706c6503636f6d000001000114733939373431336431373566332d7031312d77320c5f6863632d706f696e746572045f756470056c6f63616c00001080010000007800ba126170703d6863632d706f696e7465722d76311d6576656e745f69643d733939373431336431373566332d7031312d77320c7061636b65745f6e6f3d31310e77696e646f775f696e6465783d321077696e646f775f626974733d31313030107061636b65745f626974733d3131303012636f6d70617265645f626974733d31313030156d6573736167655f6269745f6c656e6774683d3136216d6573736167655f626974735f3030303d31313131303030303131303030303131",
+      "send_status": "sent"
+    },
+    {
+      "event_id": "s997413d175f3-p18-w3",
+      "session_id": "997413d175f3",
+      "timestamp": "2026-11-07T20:07:01.963",
+      "interface": "\\Device\\NPF_{087FD757-EA4B-4CC8-B4E2-481BB410C89E}",
+      "source_ip": "10.10.10.3",
+      "source_mac": "10:91:d1:ef:ef:9d",
+      "destination_ip": "224.0.0.251",
+      "destination_port": 5353,
+      "packet_identity": {
+        "packet_no": 18,
+        "window_index": 3
+      },
+      "message_bits": "1111000011000011",
+      "message_bit_length": 16,
+      "match": {
+        "packet_no": 18,
+        "window_index": 3,
+        "window_value": 3,
+        "window_width": 4,
+        "packet_bit_value": 3,
+        "compared_value": 3,
+        "status": "matched",
+        "packet": {
+          "packet_no": 18,
+          "protocol": "ARP",
+          "poi_mode": "arp",
+          "src_mac": "16:f2:9b:3f:27:f6",
+          "dst_mac": "ff:ff:ff:ff:ff:ff",
+          "src_ip": null,
+          "timestamp": "2026-11-07T20:07:01.961",
+          "icd_ms": 39822.909,
+          "rounded": 39900,
+          "counter": 7
+        }
+      },
+      "wire_frame_hex": "01005e0000fb1091d1efef9d08004500012f00010000ff11c5b40a0a0a03e00000fb14e914e9011b7d9600008500000100010000000003777777076578616d706c6503636f6d000001000114733939373431336431373566332d7031382d77330c5f6863632d706f696e746572045f756470056c6f63616c00001080010000007800ba126170703d6863632d706f696e7465722d76311d6576656e745f69643d733939373431336431373566332d7031382d77330c7061636b65745f6e6f3d31380e77696e646f775f696e6465783d331077696e646f775f626974733d30303131107061636b65745f626974733d3030313112636f6d70617265645f626974733d30303131156d6573736167655f6269745f6c656e6774683d3136216d6573736167655f626974735f3030303d31313131303030303131303030303131",
+      "send_status": "sent"
     }
   ]
 }

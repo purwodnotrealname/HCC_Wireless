@@ -26,13 +26,19 @@ class ReceiverSecretBitsStore:
             self.data["pointer_events"] = []
             self._save()
 
-    def record_pointer(self, pointer_record, history_record):
+    def record_pointer(
+        self,
+        pointer_record,
+        history_record,
+        buffer_snapshot=None,
+    ):
         existing_ids = {
             chunk.get("history_record_id") for chunk in self.data["chunks"]
         }
         pointer_event = {
             "pointer_no": len(self.data["pointer_events"]) + 1,
             "pointer": pointer_record,
+            "buffer_snapshot": list(buffer_snapshot or []),
             "status": "buffer_empty",
         }
 

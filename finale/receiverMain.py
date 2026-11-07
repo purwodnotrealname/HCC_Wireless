@@ -1,4 +1,5 @@
 import sys
+import math
 from ipaddress import IPv4Address
 from pathlib import Path
 
@@ -50,19 +51,46 @@ def choose_poi_mode():
     print("Select the packet-of-interest (PoI) mode:")
     print("  [1] Legacy (ARP, DHCP, mDNS, and SSDP)")
     print("  [2] ARP only (mDNS pointer packets are still recognized)")
+    print("  [3] SSDP only (mDNS pointer packets are still recognized)")
     while True:
-        choice = input("Choose PoI mode [1/2]: ").strip()
+        choice = input("Choose PoI mode [1/2/3]: ").strip()
         if choice == "1":
             return "legacy"
         if choice == "2":
             return "arp"
-        print("Invalid selection. Enter 1 or 2.")
+        if choice == "3":
+            return "ssdp"
+        print("Invalid selection. Enter 1, 2, or 3.")
+
+
+def choose_silent_interval():
+    while True:
+        enabled = input(
+            "Enable silent interval race guard? [y/N]: "
+        ).strip().lower()
+        if enabled in ("", "n", "no"):
+            return None
+        if enabled in ("y", "yes"):
+            break
+        print("Enter y or n.")
+
+    while True:
+        value = input("Silent interval threshold in milliseconds: ").strip()
+        try:
+            interval_ms = float(value)
+        except ValueError:
+            print("Enter a positive number of milliseconds.")
+            continue
+        if math.isfinite(interval_ms) and interval_ms > 0:
+            return interval_ms
+        print("Enter a positive finite number of milliseconds.")
 
 
 def main():
     poi_mode = choose_poi_mode()
     iface = choose_interface()
     pointer_source_ip = choose_pointer_source_ip()
+    silent_interval_ms = choose_silent_interval()
     receiver = ReceiverHistoryExtractor(
         iface=iface,
         buffer_path=BUFFER_FILE,
@@ -70,6 +98,7 @@ def main():
         secret_bits_path=SECRET_BITS_FILE,
         pointer_source_ip=pointer_source_ip,
         poi_mode=poi_mode,
+        silent_interval_ms=silent_interval_ms,
     )
 
     try:

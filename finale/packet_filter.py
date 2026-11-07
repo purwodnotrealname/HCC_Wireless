@@ -21,6 +21,7 @@ CAPTURE_FILTER = (
     f"{MDNS_FILTER} or {SSDP_FILTER})"
 )
 ARP_ONLY_CAPTURE_FILTER = "arp"
+SSDP_ONLY_CAPTURE_FILTER = SSDP_FILTER
 
 
 def get_packet_filter(poi_mode="legacy"):
@@ -29,4 +30,6 @@ def get_packet_filter(poi_mode="legacy"):
         return CAPTURE_FILTER
     if poi_mode == "arp":
         return ARP_ONLY_CAPTURE_FILTER
+    if poi_mode == "ssdp":
+        return SSDP_ONLY_CAPTURE_FILTER
     raise ValueError(f"Unsupported PoI mode: {poi_mode}")
