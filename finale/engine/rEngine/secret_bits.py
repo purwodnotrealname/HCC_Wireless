@@ -1,4 +1,4 @@
-"""Accumulate history bits acknowledged by recognized pointer packets."""
+"""latest"""
 
 import json
 import os
