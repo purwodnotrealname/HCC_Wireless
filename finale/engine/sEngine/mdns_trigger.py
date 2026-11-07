@@ -1,5 +1,3 @@
-"""Publish a DNS-SD service announcement for each successful bit match."""
-
 import json
 import socket
 import uuid
@@ -8,7 +6,6 @@ from pathlib import Path
 
 from scapy.all import conf, get_if_addr
 from scapy.layers.inet import IP, UDP
-
 
 SERVICE_TYPE = "_hcc-match._udp.local."
 SIGNAL_SIGNATURE = "hcc_match_trigger_v1"
@@ -19,7 +16,6 @@ TRIGGER_LOG_FILE = (
     / "mdns_triggers.json"
 )
 
-
 class MDNSTrigger:
     """Announce one short-lived DNS-SD service for every matched window."""
 
@@ -28,8 +24,6 @@ class MDNSTrigger:
             from zeroconf import IPVersion, Zeroconf
         except ImportError as exc:
             raise RuntimeError(
-                "The new mDNS trigger needs the 'zeroconf' package. "
-                "Install it with: pip install zeroconf"
             ) from exc
 
         self.iface = iface if iface is not None else conf.iface
@@ -63,7 +57,6 @@ class MDNSTrigger:
             json.dump({"triggers": records}, f, indent=2)
 
     def send_for_match(self, attempt):
-        """Register a DNS-SD service, causing Zeroconf to announce it."""
         event_id = (
             f"s{self.session_id}-p{attempt['packet_no']}"
             f"-w{attempt['window_index']}"
@@ -119,7 +112,6 @@ class MDNSTrigger:
         print(f"       -> mDNS service announced for {event_id}", flush=True)
 
     def is_own_signal(self, pkt):
-        """Ignore this sender's mDNS announcements during packet capture."""
         if not (pkt.haslayer(IP) and pkt.haslayer(UDP)):
             return False
         if (
@@ -131,7 +123,6 @@ class MDNSTrigger:
         return SIGNAL_SIGNATURE.encode("ascii") in bytes(pkt[UDP].payload)
 
     def close(self):
-        """Withdraw registered services and stop the Zeroconf responder."""
         try:
             for service in reversed(self._registered_services):
                 self._zeroconf.unregister_service(service)

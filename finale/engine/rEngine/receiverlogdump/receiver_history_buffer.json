@@ -1,0 +1,29 @@
+{
+  "capacity": 4,
+  "order": "newest_first",
+  "buffered_count": 2,
+  "counters": [
+    {
+      "session_id": "d42b63d44e864fdfaca5cba2917d58c0",
+      "packet_no": 86,
+      "protocol": "SSDP",
+      "src_mac": "08:5b:d6:f0:0f:4b",
+      "dst_mac": "01:00:5e:7f:ff:fa",
+      "src_ip": "10.10.10.4",
+      "timestamp": "2026-11-07T17:19:53.930",
+      "counter": 6,
+      "counter_bits": "1101"
+    },
+    {
+      "session_id": "d42b63d44e864fdfaca5cba2917d58c0",
+      "packet_no": 85,
+      "protocol": "SSDP",
+      "src_mac": "08:5b:d6:f0:0f:4b",
+      "dst_mac": "01:00:5e:7f:ff:fa",
+      "src_ip": "10.10.10.4",
+      "timestamp": "2026-11-07T17:19:53.917",
+      "counter": 5,
+      "counter_bits": "0010"
+    }
+  ]
+}
