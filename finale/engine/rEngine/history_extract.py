@@ -117,7 +117,6 @@ class ReceiverHistoryExtractor:
         self.packet_count = 0
         self.captured_packet_count = 0
         self.silent_interval_dropped_packets = 0
-        self._last_pointer_arrival_perf_counter = None
         self._pending_history_packets = deque()
         self._counter_state = ReceiverCounterState()
         self._queue = queue.Queue()
@@ -310,9 +309,6 @@ class ReceiverHistoryExtractor:
                             self._resolve_pending_before_pointer(
                                 arrival_perf_counter
                             )
-                            self._last_pointer_arrival_perf_counter = (
-                                arrival_perf_counter
-                            )
                         pointer_record["timestamp"] = wallclock
                         self._counter_state.reset()
                         buffer_snapshot = self.store.newest_first
@@ -353,23 +349,6 @@ class ReceiverHistoryExtractor:
                         continue
 
                     if self.silent_interval_ms is not None:
-                        if self._last_pointer_arrival_perf_counter is not None:
-                            delta_ms = (
-                                arrival_perf_counter
-                                - self._last_pointer_arrival_perf_counter
-                            ) * 1000
-                            if 0 <= delta_ms < self.silent_interval_ms:
-                                self._record_silent_interval_drop(
-                                    pkt,
-                                    wallclock,
-                                    proto,
-                                    delta_ms,
-                                    "after",
-                                )
-                                continue
-                            if delta_ms >= self.silent_interval_ms:
-                                self._last_pointer_arrival_perf_counter = None
-
                         self._pending_history_packets.append({
                             "packet": pkt,
                             "wallclock": wallclock,
