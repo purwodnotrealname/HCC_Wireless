@@ -108,6 +108,29 @@ def transform_records(
 
     transformed = []
     for rec in records:
+        if rec.get("counter_mode") == "periodic":
+            counter = rec["counter"]
+            if (
+                isinstance(counter, bool)
+                or not isinstance(counter, int)
+                or not 0 <= counter < NIBBLE_SPACE
+            ):
+                raise ValueError("Periodic counter must be a 4-bit integer")
+            bits = {
+                "icd_ms": None,
+                "icd_int_ms": None,
+                "rounded": None,
+                "counter": counter,
+                "bit_value": counter,
+            }
+            transformed.append({
+                "sample_no": rec.get("sample_no"),
+                "protocol": rec.get("protocol"),
+                "timestamp": rec.get("timestamp"),
+                **bits,
+            })
+            continue
+
         bits = icd_to_bits(rec["icd_ms"], counter_state)
         transformed.append({
             "packet_no": rec.get("packet_no"),
@@ -129,28 +152,53 @@ def transform_json_file(
     with open(input_path, "r", encoding="utf-8") as f:
         data = json.load(f)
 
+    periodic_mode = data.get("counter_mode") == "periodic"
+    source_records = (
+        data.get("samples", [])
+        if periodic_mode
+        else data.get("packets", [])
+    )
     transformed_packets = transform_records(
-        data.get("packets", []),
+        source_records,
         reset_after_packet_nos=reset_after_packet_nos,
     )
 
     output = {
         "source_file": input_path,
         "interface": data.get("interface"),
+        "counter_mode": data.get("counter_mode", "packet"),
+        "counter_interval_seconds": data.get("counter_interval_seconds"),
         "initialization_time": data.get("initialization_time"),
-        "total_packets": data.get("total_packets"),
-        "mapping": (
-            "counter sequence reset after matched packets"
-            if reset_after_packet_nos
-            else "static counter sequence"
+        "total_packets": None if periodic_mode else data.get("total_packets"),
+        "total_counter_samples": data.get(
+            "total_counter_samples", data.get("total_packets")
         ),
-        "output_bits_per_icd": OUTPUT_BITS,
-        "icd_scale": "1 unit = 1 ms",
-        "counter_range": [COUNTER_MIN, COUNTER_MAX],
-        "counter_table": {
-            str(c): v for c, v in COUNTER_TABLE.items()
-        },
-        "packets": transformed_packets,
+        "mapping": (
+            "periodic 4-bit values in legacy history-bit order"
+            if periodic_mode
+            else (
+                "counter sequence reset after matched packets"
+                if reset_after_packet_nos
+                else "static counter sequence"
+            )
+        ),
+        (
+            "output_bits_per_sample"
+            if periodic_mode
+            else "output_bits_per_icd"
+        ): OUTPUT_BITS,
+        "icd_scale": None if periodic_mode else "1 unit = 1 ms",
+        "counter_range": (
+            [0, NIBBLE_SPACE - 1]
+            if periodic_mode
+            else [COUNTER_MIN, COUNTER_MAX]
+        ),
+        "counter_table": (
+            {str(c): c for c in range(NIBBLE_SPACE)}
+            if periodic_mode
+            else {str(c): v for c, v in COUNTER_TABLE.items()}
+        ),
+        ("samples" if periodic_mode else "packets"): transformed_packets,
     }
 
     with open(output_path, "w", encoding="utf-8") as f:

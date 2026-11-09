@@ -54,23 +54,39 @@ class PointerSignalSender:
         ]
 
     def _build_packet(self, attempt, event_id):
-        packet_no = attempt["packet_no"]
+        counter_mode = attempt.get("counter_mode", "packet")
+        sample_no = attempt.get("sample_no")
+        is_periodic = counter_mode == "periodic" and sample_no is not None
+        sequence_no = sample_no if is_periodic else attempt["packet_no"]
         window_index = attempt["window_index"]
         window_width = attempt["window_width"]
         window_bits = f"{attempt['window_value']:0{window_width}b}"
-        packet_bits = f"{attempt['packet_bit_value']:04b}"
+        counter_value = (
+            attempt["counter_value"]
+            if is_periodic
+            else attempt["packet_bit_value"]
+        )
+        sample_bits = f"{counter_value:04b}"
         compared_bits = f"{attempt['compared_value']:0{window_width}b}"
 
-        txt_fields = [
-            SIGNAL_SIGNATURE,
-            f"event_id={event_id}",
-            f"packet_no={packet_no}",
+        txt_fields = [SIGNAL_SIGNATURE, f"event_id={event_id}"]
+        if is_periodic:
+            txt_fields.extend([
+                "counter_mode=periodic",
+                f"sample_no={sequence_no}",
+                f"counter_bits={sample_bits}",
+            ])
+        else:
+            txt_fields.extend([
+                f"packet_no={sequence_no}",
+                f"packet_bits={sample_bits}",
+            ])
+        txt_fields.extend([
             f"window_index={window_index}",
             f"window_bits={window_bits}",
-            f"packet_bits={packet_bits}",
             f"compared_bits={compared_bits}",
             f"message_bit_length={len(self.message_bits)}",
-        ]
+        ])
         txt_fields.extend(
             f"message_bits_{index:03d}={chunk}"
             for index, chunk in enumerate(self._message_chunks())
@@ -106,8 +122,15 @@ class PointerSignalSender:
 
     def send_for_match(self, attempt):
         """Send one multicast mDNS TXT response for a matched window."""
+        is_periodic = (
+            attempt.get("counter_mode") == "periodic"
+            and attempt.get("sample_no") is not None
+        )
+        sequence_no = (
+            attempt["sample_no"] if is_periodic else attempt["packet_no"]
+        )
         event_id = (
-            f"s{self.session_id}-p{attempt['packet_no']}"
+            f"s{self.session_id}-{'t' if is_periodic else 'p'}{sequence_no}"
             f"-w{attempt['window_index']}"
         )
         packet = self._build_packet(attempt, event_id)
@@ -120,10 +143,18 @@ class PointerSignalSender:
             "source_mac": self.source_mac,
             "destination_ip": MDNS_GROUP_IP,
             "destination_port": MDNS_PORT,
-            "packet_identity": {
-                "packet_no": attempt["packet_no"],
-                "window_index": attempt["window_index"],
-            },
+            **(
+                {"counter_mode": "periodic"}
+                if is_periodic
+                else {}
+            ),
+            (
+                "counter_identity" if is_periodic else "packet_identity"
+            ): (
+                {"sample_no": sequence_no, "window_index": attempt["window_index"]}
+                if is_periodic
+                else {"packet_no": sequence_no, "window_index": attempt["window_index"]}
+            ),
             "message_bits": self.message_bits,
             "message_bit_length": len(self.message_bits),
             "match": attempt,

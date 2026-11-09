@@ -15,10 +15,18 @@ from scapy.layers.inet6 import IPv6
 from scapy.layers.l2 import ARP, Ether
 from scapy.sendrecv import AsyncSniffer
 
-from .history_bits import ReceiverCounterState, next_counter_value
+from .history_bits import (
+    ReceiverCounterState,
+    next_counter_value,
+    next_periodic_counter_value,
+)
 from .history_buffer import ReceiverHistoryStore
 from .pointer_recognition import PointerRecognizer
 from .secret_bits import ReceiverSecretBitsStore
+from engine.periodic_counter import (
+    PERIODIC_COUNTER_INTERVAL_SECONDS,
+    PeriodicCounterState,
+)
 
 
 DHCP_PORTS = (67, 68)
@@ -37,6 +45,7 @@ CAPTURE_FILTER = (
     f"({ARP_BROADCAST_FILTER} or {DHCP_FILTER} or "
     f"{MDNS_FILTER} or {SSDP_FILTER})"
 )
+POINTER_FILTER = f"(udp and dst port {MDNS_PORT} and dst host 224.0.0.251)"
 
 
 def get_packet_filter(poi_mode="legacy"):
@@ -95,14 +104,22 @@ class ReceiverHistoryExtractor:
         pointer_source_ip,
         poi_mode="legacy",
         silent_interval_ms=None,
+        counter_mode="packet",
     ):
         self.iface = iface
-        self.store = ReceiverHistoryStore(buffer_path, log_path)
+        if counter_mode not in ("packet", "periodic"):
+            raise ValueError(f"Unsupported counter mode: {counter_mode}")
+        self.counter_mode = counter_mode
+        if counter_mode == "periodic" and silent_interval_ms is not None:
+            raise ValueError("silent interval is not available in periodic mode")
+        self.store = ReceiverHistoryStore(
+            buffer_path, log_path, counter_mode=counter_mode
+        )
         self.secret_bits_store = ReceiverSecretBitsStore(secret_bits_path)
         self.pointer_recognizer = PointerRecognizer(pointer_source_ip)
-        if poi_mode not in ("legacy", "arp", "ssdp"):
+        if counter_mode == "packet" and poi_mode not in ("legacy", "arp", "ssdp"):
             raise ValueError(f"Unsupported PoI mode: {poi_mode}")
-        self.poi_mode = poi_mode
+        self.poi_mode = poi_mode if counter_mode == "packet" else None
         if silent_interval_ms is not None and (
             not math.isfinite(float(silent_interval_ms))
             or float(silent_interval_ms) <= 0
@@ -118,7 +135,13 @@ class ReceiverHistoryExtractor:
         self.captured_packet_count = 0
         self.silent_interval_dropped_packets = 0
         self._pending_history_packets = deque()
-        self._counter_state = ReceiverCounterState()
+        self._counter_state = (
+            PeriodicCounterState()
+            if counter_mode == "periodic"
+            else ReceiverCounterState()
+        )
+        self._next_periodic_tick = None
+        self._sample_no = 0
         self._queue = queue.Queue()
         self._worker = None
 
@@ -191,6 +214,7 @@ class ReceiverHistoryExtractor:
         record = {
             "session_id": self.session_id,
             "packet_no": self.packet_count,
+            "counter_mode": "packet",
             "protocol": str(proto),
             "poi_mode": self.poi_mode,
             "src_mac": src_mac,
@@ -209,6 +233,42 @@ class ReceiverHistoryExtractor:
             f"{self.store.capacity})",
             flush=True,
         )
+
+    def _record_periodic_value(self):
+        self._sample_no += 1
+        self.packet_count += 1
+        counter_value = next_periodic_counter_value(self._counter_state)
+        record = {
+            "session_id": self.session_id,
+            "sample_no": self._sample_no,
+            "protocol": "PERIODIC",
+            "counter_mode": "periodic",
+            "timestamp": datetime.now().isoformat(timespec="milliseconds"),
+            **counter_value,
+        }
+        self.store.add(record)
+        print(
+            f"[{self._sample_no:04d}] PERIODIC counter={record['counter']:02d} "
+            f"-> bits={record['counter_bits']} "
+            f"(buffer {len(self.store.newest_first)}/"
+            f"{self.store.capacity})",
+            flush=True,
+        )
+
+    def _emit_due_periodic_values(self, now_perf_counter):
+        while (
+            self.counter_mode == "periodic"
+            and self._next_periodic_tick is not None
+            and now_perf_counter >= self._next_periodic_tick
+        ):
+            next_tick = (
+                self._next_periodic_tick + PERIODIC_COUNTER_INTERVAL_SECONDS
+            )
+            self._record_periodic_value()
+            self._next_periodic_tick = max(
+                next_tick,
+                time.perf_counter() + PERIODIC_COUNTER_INTERVAL_SECONDS,
+            )
 
     def _record_silent_interval_drop(
         self,
@@ -282,12 +342,22 @@ class ReceiverHistoryExtractor:
 
     def _process_loop(self):
         while True:
-            try:
-                item = self._queue.get(
-                    timeout=(0.01 if self.silent_interval_ms is not None else None)
+            timeout = None
+            if self.counter_mode == "periodic":
+                timeout = max(
+                    0.0,
+                    self._next_periodic_tick - time.perf_counter(),
                 )
+            elif self.silent_interval_ms is not None:
+                timeout = 0.01
+            try:
+                item = self._queue.get(timeout=timeout)
             except queue.Empty:
-                self._flush_expired_history_packets(time.perf_counter())
+                now = time.perf_counter()
+                if self.counter_mode == "periodic":
+                    self._emit_due_periodic_values(now)
+                else:
+                    self._flush_expired_history_packets(now)
                 continue
             try:
                 if item is None:
@@ -303,6 +373,7 @@ class ReceiverHistoryExtractor:
                 pkt, wallclock, arrival_perf_counter = item
                 try:
                     self._flush_expired_history_packets(arrival_perf_counter)
+                    self._emit_due_periodic_values(arrival_perf_counter)
                     pointer_record = self.pointer_recognizer.recognize(pkt)
                     if pointer_record is not None:
                         if self.silent_interval_ms is not None:
@@ -311,6 +382,11 @@ class ReceiverHistoryExtractor:
                             )
                         pointer_record["timestamp"] = wallclock
                         self._counter_state.reset()
+                        if self.counter_mode == "periodic":
+                            self._next_periodic_tick = (
+                                arrival_perf_counter
+                                + PERIODIC_COUNTER_INTERVAL_SECONDS
+                            )
                         buffer_snapshot = self.store.newest_first
                         history_record = self.store.latest
                         pointer_event = self.secret_bits_store.record_pointer(
@@ -344,6 +420,9 @@ class ReceiverHistoryExtractor:
                         )
                         continue
 
+                    if self.counter_mode == "periodic":
+                        continue
+
                     proto = self._classify(pkt)
                     if proto is None:
                         continue
@@ -371,29 +450,40 @@ class ReceiverHistoryExtractor:
                 flush=True,
             )
             print(f"Npcap capture ID: {self.iface}", flush=True)
-        print(
-            "PoI mode: "
-            + {
-                "arp": "ARP only",
-                "ssdp": "SSDP only",
-                "legacy": "legacy (ARP/DHCP/mDNS/SSDP)",
-            }[self.poi_mode],
-            flush=True,
-        )
-        print(f"Capture filter: {get_packet_filter(self.poi_mode)}", flush=True)
+        if self.counter_mode == "periodic":
+            capture_filter = POINTER_FILTER
+            print(
+                "Counter mode: periodic, packet independent "
+                f"(interval {PERIODIC_COUNTER_INTERVAL_SECONDS:g} seconds).",
+                flush=True,
+            )
+            print("PoI mode: not used", flush=True)
+        else:
+            capture_filter = get_packet_filter(self.poi_mode)
+            print(
+                "PoI mode: "
+                + {
+                    "arp": "ARP only",
+                    "ssdp": "SSDP only",
+                    "legacy": "legacy (ARP/DHCP/mDNS/SSDP)",
+                }[self.poi_mode],
+                flush=True,
+            )
+        print(f"Capture filter: {capture_filter}", flush=True)
         print(
             f"Pointer source IPv4: {self.pointer_recognizer.sender_ip}",
             flush=True,
         )
-        print(
-            "Silent interval: "
-            + (
-                f"{self.silent_interval_ms:g} ms"
-                if self.silent_interval_ms is not None
-                else "disabled"
-            ),
-            flush=True,
-        )
+        if self.counter_mode == "packet":
+            print(
+                "Silent interval: "
+                + (
+                    f"{self.silent_interval_ms:g} ms"
+                    if self.silent_interval_ms is not None
+                    else "disabled"
+                ),
+                flush=True,
+            )
         print(
             "Extracting counter-based values; keeping the latest "
             f"{self.store.capacity} in the receiver buffer.",
@@ -401,12 +491,14 @@ class ReceiverHistoryExtractor:
         )
         print("Press Ctrl+C to stop sniffing.\n", flush=True)
 
+        if self.counter_mode == "periodic":
+            self._next_periodic_tick = time.perf_counter()
         self._worker = threading.Thread(target=self._process_loop, daemon=True)
         self._worker.start()
         started = threading.Event()
         sniffer = AsyncSniffer(
             iface=self.iface,
-            filter=get_packet_filter(self.poi_mode),
+            filter=capture_filter,
             prn=self._on_sniff_packet,
             store=False,
             started_callback=started.set,
@@ -437,11 +529,12 @@ class ReceiverHistoryExtractor:
                 f"{self.packet_count} produced counter values.",
                 flush=True,
             )
-            print(
-                "Packets ignored by silent interval: "
-                f"{self.silent_interval_dropped_packets}",
-                flush=True,
-            )
+            if self.counter_mode == "packet":
+                print(
+                    "Packets ignored by silent interval: "
+                    f"{self.silent_interval_dropped_packets}",
+                    flush=True,
+                )
             print(f"Latest buffer: {self.store.buffer_path}", flush=True)
             print(f"Append-only log: {self.store.log_path}", flush=True)
             print(

@@ -1,26 +1,8 @@
 {
-  "poi_mode": "ssdp",
-  "silent_interval_ms": 100.0,
-  "poi_definition": "matched group-destination SSDP packets only",
-  "total_poi_packets": 3,
-  "packets": [
-    {
-      "packet_no": 2,
-      "window_index": 0,
-      "src_ip": "10.10.10.3",
-      "src_mac": "10:91:d1:ef:ef:9d"
-    },
-    {
-      "packet_no": 7,
-      "window_index": 1,
-      "src_ip": "10.10.10.3",
-      "src_mac": "10:91:d1:ef:ef:9d"
-    },
-    {
-      "packet_no": 15,
-      "window_index": 2,
-      "src_ip": "10.10.10.3",
-      "src_mac": "10:91:d1:ef:ef:9d"
-    }
-  ]
+  "counter_mode": "periodic",
+  "poi_mode": null,
+  "silent_interval_ms": null,
+  "poi_definition": "not used by periodic counter mode",
+  "total_poi_packets": 0,
+  "packets": []
 }

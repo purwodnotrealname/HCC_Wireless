@@ -47,9 +47,12 @@ class ReceiverSecretBitsStore:
             if len(bits) != 4 or any(bit not in "01" for bit in bits):
                 raise ValueError("Counter record does not contain four valid bits")
 
+            record_no = history_record.get(
+                "sample_no",
+                history_record.get("packet_no", "unknown"),
+            )
             history_record_id = (
-                f"{history_record.get('session_id', 'unknown')}:"
-                f"{history_record.get('packet_no', 'unknown')}"
+                f"{history_record.get('session_id', 'unknown')}:{record_no}"
             )
             if history_record_id in existing_ids:
                 pointer_event["status"] = "counter_already_added"

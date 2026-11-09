@@ -1,191 +1,262 @@
 {
   "interface": "\\Device\\NPF_{087FD757-EA4B-4CC8-B4E2-481BB410C89E}",
-  "poi_mode": "ssdp",
-  "silent_interval_ms": 100.0,
+  "counter_mode": "periodic",
+  "counter_interval_seconds": 2.0,
+  "poi_mode": null,
+  "silent_interval_ms": null,
   "silent_interval_dropped_packets": [],
-  "poi_definition": "group-destination SSDP packets only",
-  "initialization_time": "2026-11-07T22:57:57.263",
-  "total_packets": 15,
-  "packets": [
+  "poi_definition": null,
+  "initialization_time": "2026-11-09T16:37:53.273",
+  "total_packets": null,
+  "total_counter_samples": 31,
+  "samples": [
     {
-      "packet_no": 1,
-      "protocol": "SSDP",
-      "poi_mode": "ssdp",
-      "src_mac": "10:91:d1:ef:ef:9d",
-      "dst_mac": "01:00:5e:7f:ff:fa",
-      "src_ip": "10.10.10.3",
-      "timestamp": "2026-11-07T22:57:57.263",
-      "icd_ms": 0,
-      "rounded": 0,
-      "counter": 1
+      "sample_no": 1,
+      "protocol": "PERIODIC",
+      "counter_mode": "periodic",
+      "timestamp": "2026-11-09T16:37:53.273",
+      "counter": 0,
+      "bit_value": 0
     },
     {
-      "packet_no": 2,
-      "protocol": "SSDP",
-      "poi_mode": "ssdp",
-      "src_mac": "10:91:d1:ef:ef:9d",
-      "dst_mac": "01:00:5e:7f:ff:fa",
-      "src_ip": "10.10.10.3",
-      "timestamp": "2026-11-07T22:57:57.278",
-      "icd_ms": 14.777,
-      "rounded": 100,
-      "counter": 2
+      "sample_no": 2,
+      "protocol": "PERIODIC",
+      "counter_mode": "periodic",
+      "timestamp": "2026-11-09T16:37:55.284",
+      "counter": 15,
+      "bit_value": 15
     },
     {
-      "packet_no": 3,
-      "protocol": "SSDP",
-      "poi_mode": "ssdp",
-      "src_mac": "10:91:d1:ef:ef:9d",
-      "dst_mac": "01:00:5e:7f:ff:fa",
-      "src_ip": "10.10.10.3",
-      "timestamp": "2026-11-07T22:57:57.321",
-      "icd_ms": 57.823,
-      "rounded": 100,
-      "counter": 1
+      "sample_no": 3,
+      "protocol": "PERIODIC",
+      "counter_mode": "periodic",
+      "timestamp": "2026-11-09T16:37:57.293",
+      "counter": 1,
+      "bit_value": 1
     },
     {
-      "packet_no": 4,
-      "protocol": "SSDP",
-      "poi_mode": "ssdp",
-      "src_mac": "10:91:d1:ef:ef:9d",
-      "dst_mac": "01:00:5e:7f:ff:fa",
-      "src_ip": "10.10.10.3",
-      "timestamp": "2026-11-07T22:57:58.273",
-      "icd_ms": 1009.857,
-      "rounded": 1100,
-      "counter": 2
+      "sample_no": 4,
+      "protocol": "PERIODIC",
+      "counter_mode": "periodic",
+      "timestamp": "2026-11-09T16:37:59.309",
+      "counter": 14,
+      "bit_value": 14
     },
     {
-      "packet_no": 5,
-      "protocol": "SSDP",
-      "poi_mode": "ssdp",
-      "src_mac": "10:91:d1:ef:ef:9d",
-      "dst_mac": "01:00:5e:7f:ff:fa",
-      "src_ip": "10.10.10.3",
-      "timestamp": "2026-11-07T22:57:58.288",
-      "icd_ms": 1024.925,
-      "rounded": 1100,
-      "counter": 3
+      "sample_no": 5,
+      "protocol": "PERIODIC",
+      "counter_mode": "periodic",
+      "timestamp": "2026-11-09T16:38:01.324",
+      "counter": 2,
+      "bit_value": 2
     },
     {
-      "packet_no": 6,
-      "protocol": "SSDP",
-      "poi_mode": "ssdp",
-      "src_mac": "10:91:d1:ef:ef:9d",
-      "dst_mac": "01:00:5e:7f:ff:fa",
-      "src_ip": "10.10.10.3",
-      "timestamp": "2026-11-07T22:57:58.333",
-      "icd_ms": 1070.497,
-      "rounded": 1100,
-      "counter": 4
+      "sample_no": 6,
+      "protocol": "PERIODIC",
+      "counter_mode": "periodic",
+      "timestamp": "2026-11-09T16:38:03.338",
+      "counter": 13,
+      "bit_value": 13
     },
     {
-      "packet_no": 7,
-      "protocol": "SSDP",
-      "poi_mode": "ssdp",
-      "src_mac": "10:91:d1:ef:ef:9d",
-      "dst_mac": "01:00:5e:7f:ff:fa",
-      "src_ip": "10.10.10.3",
-      "timestamp": "2026-11-07T22:57:59.285",
-      "icd_ms": 2022.372,
-      "rounded": 2100,
-      "counter": 5
+      "sample_no": 7,
+      "protocol": "PERIODIC",
+      "counter_mode": "periodic",
+      "timestamp": "2026-11-09T16:38:05.345",
+      "counter": 3,
+      "bit_value": 3
     },
     {
-      "packet_no": 8,
-      "protocol": "SSDP",
-      "poi_mode": "ssdp",
-      "src_mac": "10:91:d1:ef:ef:9d",
-      "dst_mac": "01:00:5e:7f:ff:fa",
-      "src_ip": "10.10.10.3",
-      "timestamp": "2026-11-07T22:57:59.300",
-      "icd_ms": 2036.936,
-      "rounded": 2100,
-      "counter": 1
+      "sample_no": 8,
+      "protocol": "PERIODIC",
+      "counter_mode": "periodic",
+      "timestamp": "2026-11-09T16:38:07.347",
+      "counter": 12,
+      "bit_value": 12
     },
     {
-      "packet_no": 9,
-      "protocol": "SSDP",
-      "poi_mode": "ssdp",
-      "src_mac": "10:91:d1:ef:ef:9d",
-      "dst_mac": "01:00:5e:7f:ff:fa",
-      "src_ip": "10.10.10.3",
-      "timestamp": "2026-11-07T22:57:59.347",
-      "icd_ms": 2084.386,
-      "rounded": 2100,
-      "counter": 2
+      "sample_no": 9,
+      "protocol": "PERIODIC",
+      "counter_mode": "periodic",
+      "timestamp": "2026-11-09T16:38:09.361",
+      "counter": 4,
+      "bit_value": 4
     },
     {
-      "packet_no": 10,
-      "protocol": "SSDP",
-      "poi_mode": "ssdp",
-      "src_mac": "10:91:d1:ef:ef:9d",
-      "dst_mac": "01:00:5e:7f:ff:fa",
-      "src_ip": "10.10.10.3",
-      "timestamp": "2026-11-07T22:58:00.293",
-      "icd_ms": 3030.63,
-      "rounded": 3100,
-      "counter": 3
+      "sample_no": 10,
+      "protocol": "PERIODIC",
+      "counter_mode": "periodic",
+      "timestamp": "2026-11-09T16:38:11.362",
+      "counter": 11,
+      "bit_value": 11
     },
     {
-      "packet_no": 11,
-      "protocol": "SSDP",
-      "poi_mode": "ssdp",
-      "src_mac": "10:91:d1:ef:ef:9d",
-      "dst_mac": "01:00:5e:7f:ff:fa",
-      "src_ip": "10.10.10.3",
-      "timestamp": "2026-11-07T22:58:00.308",
-      "icd_ms": 3045.703,
-      "rounded": 3100,
-      "counter": 4
+      "sample_no": 11,
+      "protocol": "PERIODIC",
+      "counter_mode": "periodic",
+      "timestamp": "2026-11-09T16:38:13.365",
+      "counter": 5,
+      "bit_value": 5
     },
     {
-      "packet_no": 12,
-      "protocol": "SSDP",
-      "poi_mode": "ssdp",
-      "src_mac": "10:91:d1:ef:ef:9d",
-      "dst_mac": "01:00:5e:7f:ff:fa",
-      "src_ip": "10.10.10.3",
-      "timestamp": "2026-11-07T22:58:00.355",
-      "icd_ms": 3091.747,
-      "rounded": 3100,
-      "counter": 5
+      "sample_no": 12,
+      "protocol": "PERIODIC",
+      "counter_mode": "periodic",
+      "timestamp": "2026-11-09T16:38:15.378",
+      "counter": 10,
+      "bit_value": 10
     },
     {
-      "packet_no": 13,
-      "protocol": "SSDP",
-      "poi_mode": "ssdp",
-      "src_mac": "10:91:d1:ef:ef:9d",
-      "dst_mac": "01:00:5e:7f:ff:fa",
-      "src_ip": "10.10.10.3",
-      "timestamp": "2026-11-07T22:59:57.268",
-      "icd_ms": 120004.795,
-      "rounded": 120100,
-      "counter": 6
+      "sample_no": 13,
+      "protocol": "PERIODIC",
+      "counter_mode": "periodic",
+      "timestamp": "2026-11-09T16:38:17.389",
+      "counter": 6,
+      "bit_value": 6
     },
     {
-      "packet_no": 14,
-      "protocol": "SSDP",
-      "poi_mode": "ssdp",
-      "src_mac": "10:91:d1:ef:ef:9d",
-      "dst_mac": "01:00:5e:7f:ff:fa",
-      "src_ip": "10.10.10.3",
-      "timestamp": "2026-11-07T22:59:57.296",
-      "icd_ms": 120033.085,
-      "rounded": 120100,
-      "counter": 7
+      "sample_no": 14,
+      "protocol": "PERIODIC",
+      "counter_mode": "periodic",
+      "timestamp": "2026-11-09T16:38:19.401",
+      "counter": 9,
+      "bit_value": 9
     },
     {
-      "packet_no": 15,
-      "protocol": "SSDP",
-      "poi_mode": "ssdp",
-      "src_mac": "10:91:d1:ef:ef:9d",
-      "dst_mac": "01:00:5e:7f:ff:fa",
-      "src_ip": "10.10.10.3",
-      "timestamp": "2026-11-07T22:59:57.343",
-      "icd_ms": 120080.015,
-      "rounded": 120100,
-      "counter": 8
+      "sample_no": 15,
+      "protocol": "PERIODIC",
+      "counter_mode": "periodic",
+      "timestamp": "2026-11-09T16:38:21.478",
+      "counter": 0,
+      "bit_value": 0
+    },
+    {
+      "sample_no": 16,
+      "protocol": "PERIODIC",
+      "counter_mode": "periodic",
+      "timestamp": "2026-11-09T16:38:23.493",
+      "counter": 15,
+      "bit_value": 15
+    },
+    {
+      "sample_no": 17,
+      "protocol": "PERIODIC",
+      "counter_mode": "periodic",
+      "timestamp": "2026-11-09T16:38:25.504",
+      "counter": 1,
+      "bit_value": 1
+    },
+    {
+      "sample_no": 18,
+      "protocol": "PERIODIC",
+      "counter_mode": "periodic",
+      "timestamp": "2026-11-09T16:38:27.520",
+      "counter": 14,
+      "bit_value": 14
+    },
+    {
+      "sample_no": 19,
+      "protocol": "PERIODIC",
+      "counter_mode": "periodic",
+      "timestamp": "2026-11-09T16:38:29.586",
+      "counter": 0,
+      "bit_value": 0
+    },
+    {
+      "sample_no": 20,
+      "protocol": "PERIODIC",
+      "counter_mode": "periodic",
+      "timestamp": "2026-11-09T16:38:31.597",
+      "counter": 15,
+      "bit_value": 15
+    },
+    {
+      "sample_no": 21,
+      "protocol": "PERIODIC",
+      "counter_mode": "periodic",
+      "timestamp": "2026-11-09T16:38:33.609",
+      "counter": 1,
+      "bit_value": 1
+    },
+    {
+      "sample_no": 22,
+      "protocol": "PERIODIC",
+      "counter_mode": "periodic",
+      "timestamp": "2026-11-09T16:38:35.623",
+      "counter": 14,
+      "bit_value": 14
+    },
+    {
+      "sample_no": 23,
+      "protocol": "PERIODIC",
+      "counter_mode": "periodic",
+      "timestamp": "2026-11-09T16:38:37.630",
+      "counter": 2,
+      "bit_value": 2
+    },
+    {
+      "sample_no": 24,
+      "protocol": "PERIODIC",
+      "counter_mode": "periodic",
+      "timestamp": "2026-11-09T16:38:39.642",
+      "counter": 13,
+      "bit_value": 13
+    },
+    {
+      "sample_no": 25,
+      "protocol": "PERIODIC",
+      "counter_mode": "periodic",
+      "timestamp": "2026-11-09T16:38:41.658",
+      "counter": 3,
+      "bit_value": 3
+    },
+    {
+      "sample_no": 26,
+      "protocol": "PERIODIC",
+      "counter_mode": "periodic",
+      "timestamp": "2026-11-09T16:38:43.672",
+      "counter": 12,
+      "bit_value": 12
+    },
+    {
+      "sample_no": 27,
+      "protocol": "PERIODIC",
+      "counter_mode": "periodic",
+      "timestamp": "2026-11-09T16:38:45.678",
+      "counter": 4,
+      "bit_value": 4
+    },
+    {
+      "sample_no": 28,
+      "protocol": "PERIODIC",
+      "counter_mode": "periodic",
+      "timestamp": "2026-11-09T16:38:47.694",
+      "counter": 11,
+      "bit_value": 11
+    },
+    {
+      "sample_no": 29,
+      "protocol": "PERIODIC",
+      "counter_mode": "periodic",
+      "timestamp": "2026-11-09T16:38:49.704",
+      "counter": 5,
+      "bit_value": 5
+    },
+    {
+      "sample_no": 30,
+      "protocol": "PERIODIC",
+      "counter_mode": "periodic",
+      "timestamp": "2026-11-09T16:38:51.735",
+      "counter": 10,
+      "bit_value": 10
+    },
+    {
+      "sample_no": 31,
+      "protocol": "PERIODIC",
+      "counter_mode": "periodic",
+      "timestamp": "2026-11-09T16:38:53.750",
+      "counter": 6,
+      "bit_value": 6
     }
   ]
 }

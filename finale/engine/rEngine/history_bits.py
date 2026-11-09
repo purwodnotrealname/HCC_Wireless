@@ -67,3 +67,11 @@ def next_counter_value(counter_state):
         "counter": counter,
         "counter_bits": f"{nibble:0{OUTPUT_BITS}b}",
     }
+
+
+def next_periodic_counter_value(counter_state):
+    counter = counter_state.next_value()
+    return {
+        "counter": counter,
+        "counter_bits": f"{counter:0{OUTPUT_BITS}b}",
+    }

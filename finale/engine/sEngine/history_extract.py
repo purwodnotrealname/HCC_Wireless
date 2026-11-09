@@ -14,6 +14,11 @@ from scapy.layers.dhcp import DHCP
 
 from packet_filter import get_packet_filter
 from .history_bits import icd_to_bits, CounterState, OUTPUT_BITS
+from engine.periodic_counter import (
+    PERIODIC_COUNTER_INTERVAL_SECONDS,
+    PeriodicCounterState,
+    timestamp_now,
+)
 
 DHCP_PORTS = (67, 68)
 MDNS_PORT = 5353
@@ -31,8 +36,12 @@ class ICDExtractor:
         matched_only_output=False,
         poi_mode="legacy",
         silent_interval_ms=None,
+        counter_mode="packet",
     ):
         self.iface = iface
+        if counter_mode not in ("packet", "periodic"):
+            raise ValueError(f"Unsupported counter mode: {counter_mode}")
+        self.counter_mode = counter_mode
         self._t0_perf_counter = None
         self._t0_capture_timestamp = None
         self.t0_wallclock = None
@@ -43,9 +52,11 @@ class ICDExtractor:
         self.on_match = on_match
         self.ignore_packet = ignore_packet
         self.matched_only_output = matched_only_output
-        if poi_mode not in ("legacy", "arp", "ssdp"):
+        if counter_mode == "periodic" and silent_interval_ms is not None:
+            raise ValueError("silent interval is not available in periodic mode")
+        if counter_mode == "packet" and poi_mode not in ("legacy", "arp", "ssdp"):
             raise ValueError(f"Unsupported PoI mode: {poi_mode}")
-        self.poi_mode = poi_mode
+        self.poi_mode = poi_mode if counter_mode == "packet" else None
         if silent_interval_ms is not None and (
             not math.isfinite(float(silent_interval_ms))
             or float(silent_interval_ms) <= 0
@@ -60,7 +71,108 @@ class ICDExtractor:
         self.silent_interval_dropped_packets = []
         self._queue = queue.Queue()
         self._worker = None
-        self._counter_state = CounterState()
+        self._counter_state = (
+            PeriodicCounterState()
+            if counter_mode == "periodic"
+            else CounterState()
+        )
+
+    def _process_periodic_sample(self, sample_no):
+        counter = self._counter_state.next_value()
+        timestamp = timestamp_now()
+        record = {
+            "sample_no": sample_no,
+            "protocol": "PERIODIC",
+            "counter_mode": "periodic",
+            "timestamp": timestamp,
+            "counter": counter,
+            "bit_value": counter,
+        }
+        self.records.append(record)
+        self.packet_count += 1
+
+        attempt = None
+        if self.matcher is not None and not self.matcher.is_complete:
+            attempt = self.matcher.try_match(
+                bit_value=counter,
+                sample_no=sample_no,
+            )
+            attempt["counter_mode"] = "periodic"
+
+        if not self.matched_only_output:
+            print(
+                f"[{sample_no:04d}] PERIODIC counter={counter:02d} "
+                f"-> bits={counter:0{OUTPUT_BITS}b}",
+                flush=True,
+            )
+        elif attempt is not None and attempt["status"] == "matched":
+            window = (
+                f"{attempt['window_index'] + 1}/"
+                f"{len(self.matcher.windows)}"
+            )
+            print(
+                f"[{sample_no:04d}] MATCH window={window} "
+                f"counter={counter:02d}",
+                flush=True,
+            )
+
+        if attempt is not None:
+            if not self.matched_only_output:
+                window_display = (
+                    f"{attempt['window_value']:0{attempt['window_width']}b}"
+                )
+                compared_display = (
+                    f"{attempt['compared_value']:0{attempt['window_width']}b}"
+                )
+                print(
+                    f"       -> window {attempt['window_index']:02d} "
+                    f"[{window_display}] vs [{compared_display}] "
+                    f"= {attempt['status'].upper()}",
+                    flush=True,
+                )
+            if attempt["status"] == "matched":
+                self._counter_state.reset()
+                if self.on_match is not None:
+                    try:
+                        self.on_match({**attempt, "sample": record})
+                    except Exception as exc:
+                        print(f"       -> pointer signal failed: {exc}", flush=True)
+
+    def _start_periodic(self):
+        self._t0_perf_counter = time.perf_counter()
+        self.t0_wallclock = timestamp_now()
+        if self.iface is None:
+            print("Pointer interface: Scapy default", flush=True)
+        else:
+            print(
+                f"Pointer interface: {describe_interface(self.iface)}",
+                flush=True,
+            )
+            print(f"Npcap capture ID: {self.iface}", flush=True)
+        print(
+            "Counter mode: periodic, packet independent "
+            f"(interval {PERIODIC_COUNTER_INTERVAL_SECONDS:g} seconds).",
+            flush=True,
+        )
+        if self.matcher is not None:
+            print(
+                f"Bit matching active: {len(self.matcher.windows)} window(s).",
+                flush=True,
+            )
+        print("Press Ctrl+C to stop and save results.\n", flush=True)
+
+        sample_no = 0
+        next_tick = time.perf_counter()
+        while self.matcher is None or not self.matcher.is_complete:
+            delay = next_tick - time.perf_counter()
+            if delay > 0:
+                time.sleep(delay)
+            sample_no += 1
+            self._process_periodic_sample(sample_no)
+            next_tick = max(
+                next_tick + PERIODIC_COUNTER_INTERVAL_SECONDS,
+                time.perf_counter() + PERIODIC_COUNTER_INTERVAL_SECONDS,
+            )
 
     @staticmethod
     def _is_group_destination(mac):
@@ -278,6 +390,10 @@ class ICDExtractor:
                 self._queue.task_done()
 
     def start(self):
+        if self.counter_mode == "periodic":
+            self._start_periodic()
+            return
+
         if not self.matched_only_output:
             if self.iface is None:
                 print("Sniffing on interface: Scapy default", flush=True)
@@ -359,19 +475,30 @@ class ICDExtractor:
     def save_json(self, filepath="history_results.json", verbose=True):
         output = {
             "interface": self.iface,
+            "counter_mode": self.counter_mode,
+            "counter_interval_seconds": (
+                PERIODIC_COUNTER_INTERVAL_SECONDS
+                if self.counter_mode == "periodic"
+                else None
+            ),
             "poi_mode": self.poi_mode,
             "silent_interval_ms": self.silent_interval_ms,
             "silent_interval_dropped_packets": (
                 self.silent_interval_dropped_packets
             ),
-            "poi_definition": {
+            "poi_definition": ({
                 "arp": "all ARP packets",
                 "ssdp": "group-destination SSDP packets only",
                 "legacy": "group-destination ARP, DHCP, mDNS, and SSDP packets",
-            }[self.poi_mode],
+            }[self.poi_mode] if self.poi_mode is not None else None),
             "initialization_time": self.t0_wallclock,
-            "total_packets": self.packet_count,
-            "packets": self.records,
+            "total_packets": (
+                self.packet_count if self.counter_mode == "packet" else None
+            ),
+            "total_counter_samples": self.packet_count,
+            (
+                "samples" if self.counter_mode == "periodic" else "packets"
+            ): self.records,
         }
         with open(filepath, "w", encoding="utf-8") as f:
             json.dump(output, f, indent=2)

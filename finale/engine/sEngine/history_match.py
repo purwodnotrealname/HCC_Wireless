@@ -60,7 +60,7 @@ class SequentialBitMatcher:
             return None
         return self.windows[self.pointer]
 
-    def try_match(self, packet_no, bit_value):
+    def try_match(self, packet_no=None, bit_value=None, sample_no=None):
         if self.is_complete:
             return None
         if isinstance(bit_value, bool) or not isinstance(bit_value, int):
@@ -77,14 +77,18 @@ class SequentialBitMatcher:
         matched = candidate == window_value
 
         attempt = {
-            "packet_no": packet_no,
             "window_index": self.pointer,
             "window_value": window_value,
             "window_width": window_width,
-            "packet_bit_value": bit_value,
             "compared_value": candidate,
             "status": "matched" if matched else "unmatched",
         }
+        if sample_no is not None:
+            attempt["sample_no"] = sample_no
+            attempt["counter_value"] = bit_value
+        else:
+            attempt["packet_no"] = packet_no
+            attempt["packet_bit_value"] = bit_value
         self.attempts.append(attempt)
 
         if matched:

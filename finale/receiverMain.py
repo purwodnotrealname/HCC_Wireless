@@ -14,6 +14,8 @@ BASE_DIR = Path(__file__).resolve().parent
 RECEIVER_LOG_DIR = BASE_DIR / "engine" / "rEngine" / "receiverlogdump"
 BUFFER_FILE = RECEIVER_LOG_DIR / "receiver_history_buffer.json"
 LOG_FILE = RECEIVER_LOG_DIR / "receiver_history.log"
+PERIODIC_BUFFER_FILE = RECEIVER_LOG_DIR / "receiver_periodic_history_buffer.json"
+PERIODIC_LOG_FILE = RECEIVER_LOG_DIR / "receiver_periodic_history.log"
 SECRET_BITS_FILE = RECEIVER_LOG_DIR / "receiver_secret_bits.json"
 
 
@@ -63,6 +65,19 @@ def choose_poi_mode():
         print("Invalid selection. Enter 1, 2, or 3.")
 
 
+def choose_counter_mode():
+    print("Select how counter values are generated:")
+    print("  [1] Legacy (derive values from selected network packets)")
+    print("  [2] Periodic (packet independent; one value every 2 seconds)")
+    while True:
+        choice = input("Choose counter mode [1/2]: ").strip()
+        if choice == "1":
+            return "packet"
+        if choice == "2":
+            return "periodic"
+        print("Invalid selection. Enter 1 or 2.")
+
+
 def choose_silent_interval():
     while True:
         enabled = input(
@@ -87,18 +102,31 @@ def choose_silent_interval():
 
 
 def main():
-    poi_mode = choose_poi_mode()
+    counter_mode = choose_counter_mode()
+    if counter_mode == "packet":
+        poi_mode = choose_poi_mode()
+        silent_interval_ms = None
+    else:
+        poi_mode = None
+        silent_interval_ms = None
     iface = choose_interface()
     pointer_source_ip = choose_pointer_source_ip()
-    silent_interval_ms = choose_silent_interval()
+    if counter_mode == "packet":
+        silent_interval_ms = choose_silent_interval()
+        buffer_path = BUFFER_FILE
+        log_path = LOG_FILE
+    else:
+        buffer_path = PERIODIC_BUFFER_FILE
+        log_path = PERIODIC_LOG_FILE
     receiver = ReceiverHistoryExtractor(
         iface=iface,
-        buffer_path=BUFFER_FILE,
-        log_path=LOG_FILE,
+        buffer_path=buffer_path,
+        log_path=log_path,
         secret_bits_path=SECRET_BITS_FILE,
         pointer_source_ip=pointer_source_ip,
         poi_mode=poi_mode,
         silent_interval_ms=silent_interval_ms,
+        counter_mode=counter_mode,
     )
 
     try:

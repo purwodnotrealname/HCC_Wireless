@@ -10,10 +10,14 @@ BUFFER_CAPACITY = 4
 
 
 class ReceiverHistoryStore:
-    def __init__(self, buffer_path, log_path, capacity=BUFFER_CAPACITY):
+    def __init__(
+        self, buffer_path, log_path, capacity=BUFFER_CAPACITY,
+        counter_mode="packet",
+    ):
         self.buffer_path = Path(buffer_path)
         self.log_path = Path(log_path)
         self.capacity = capacity
+        self.counter_mode = counter_mode
         self.buffer_path.parent.mkdir(parents=True, exist_ok=True)
         self.log_path.parent.mkdir(parents=True, exist_ok=True)
         existing, needs_rewrite = self._load_existing()
@@ -27,6 +31,8 @@ class ReceiverHistoryStore:
 
         with self.buffer_path.open("r", encoding="utf-8") as handle:
             saved = json.load(handle)
+        if saved.get("counter_mode", "packet") != self.counter_mode:
+            return [], True
         records = saved.get("counters")
         needs_rewrite = records is None
         if needs_rewrite:
@@ -40,6 +46,10 @@ class ReceiverHistoryStore:
         for record in records:
             if not isinstance(record, dict) or "counter" not in record:
                 continue
+            record_mode = record.get("counter_mode", "packet")
+            if record_mode != self.counter_mode:
+                needs_rewrite = True
+                continue
             counter_bits = record.get("counter_bits", record.get("history_bits"))
             if (
                 not isinstance(counter_bits, str)
@@ -50,7 +60,9 @@ class ReceiverHistoryStore:
             clean_records.append({
                 "session_id": record.get("session_id"),
                 "packet_no": record.get("packet_no"),
+                "sample_no": record.get("sample_no"),
                 "protocol": record.get("protocol"),
+                "counter_mode": record_mode,
                 "poi_mode": record.get("poi_mode"),
                 "src_mac": record.get("src_mac"),
                 "dst_mac": record.get("dst_mac"),
@@ -71,6 +83,7 @@ class ReceiverHistoryStore:
 
     def _save_buffer(self):
         output = {
+            "counter_mode": self.counter_mode,
             "capacity": self.capacity,
             "order": "newest_first",
             "buffered_count": len(self._buffer),

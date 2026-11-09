@@ -1,0 +1,44 @@
+{
+  "counter_mode": "periodic",
+  "capacity": 4,
+  "order": "newest_first",
+  "buffered_count": 4,
+  "counters": [
+    {
+      "session_id": "787c81580572415088fe41c56336dc81",
+      "sample_no": 4,
+      "protocol": "PERIODIC",
+      "counter_mode": "periodic",
+      "timestamp": "2026-11-09T16:40:52.199",
+      "counter": 14,
+      "counter_bits": "1110"
+    },
+    {
+      "session_id": "787c81580572415088fe41c56336dc81",
+      "sample_no": 3,
+      "protocol": "PERIODIC",
+      "counter_mode": "periodic",
+      "timestamp": "2026-11-09T16:40:50.182",
+      "counter": 1,
+      "counter_bits": "0001"
+    },
+    {
+      "session_id": "787c81580572415088fe41c56336dc81",
+      "sample_no": 2,
+      "protocol": "PERIODIC",
+      "counter_mode": "periodic",
+      "timestamp": "2026-11-09T16:40:48.168",
+      "counter": 15,
+      "counter_bits": "1111"
+    },
+    {
+      "session_id": "787c81580572415088fe41c56336dc81",
+      "sample_no": 1,
+      "protocol": "PERIODIC",
+      "counter_mode": "periodic",
+      "timestamp": "2026-11-09T16:40:46.152",
+      "counter": 0,
+      "counter_bits": "0000"
+    }
+  ]
+}

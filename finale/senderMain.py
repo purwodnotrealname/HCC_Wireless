@@ -20,6 +20,21 @@ POI_ADDRESS_OUTPUT_FILE = "engineDump/poi_addresses.json"
 def save_poi_addresses_json(
     extractor, matcher, filepath=POI_ADDRESS_OUTPUT_FILE, verbose=True
 ):
+    if extractor.counter_mode == "periodic":
+        output = {
+            "counter_mode": "periodic",
+            "poi_mode": None,
+            "silent_interval_ms": None,
+            "poi_definition": "not used by periodic counter mode",
+            "total_poi_packets": 0,
+            "packets": [],
+        }
+        with open(filepath, "w", encoding="utf-8") as f:
+            json.dump(output, f, indent=2)
+        if verbose:
+            print(f"Saved periodic-mode PoI summary to {filepath}")
+        return output
+
     packets_by_number = {
         packet["packet_no"]: packet for packet in extractor.records
     }
@@ -41,6 +56,7 @@ def save_poi_addresses_json(
         })
 
     output = {
+        "counter_mode": extractor.counter_mode,
         "poi_mode": extractor.poi_mode,
         "silent_interval_ms": extractor.silent_interval_ms,
         "poi_definition": {
@@ -70,6 +86,19 @@ def choose_sender_mode():
             return "legacy"
         if choice == "2":
             return "silent"
+        print("Invalid selection. Enter 1 or 2.")
+
+
+def choose_counter_mode():
+    print("Select how counter values are generated:")
+    print("  [1] Legacy (derive values from selected network packets)")
+    print("  [2] Periodic (packet independent; one value every 2 seconds)")
+    while True:
+        choice = input("Choose counter mode [1/2]: ").strip()
+        if choice == "1":
+            return "packet"
+        if choice == "2":
+            return "periodic"
         print("Invalid selection. Enter 1 or 2.")
 
 
@@ -143,7 +172,9 @@ def choose_interface():
         print(f"      Npcap capture ID: {name}")
 
     while True:
-        choice = input("\nSelect the adapter index to capture on: ").strip()
+        choice = input(
+            "\nSelect the adapter for capture or pointer signals: "
+        ).strip()
         try:
             return interfaces[int(choice)]
         except (ValueError, IndexError):
@@ -152,8 +183,13 @@ def choose_interface():
 
 def main():
     mode = choose_sender_mode()
-    poi_mode = choose_poi_mode()
-    silent_interval_ms = choose_silent_interval()
+    counter_mode = choose_counter_mode()
+    if counter_mode == "packet":
+        poi_mode = choose_poi_mode()
+        silent_interval_ms = choose_silent_interval()
+    else:
+        poi_mode = None
+        silent_interval_ms = None
     message_value, message_bit_length, message_bits = choose_message_bits()
     iface = choose_interface()
 
@@ -176,6 +212,7 @@ def main():
         matched_only_output=(mode == "silent"),
         poi_mode=poi_mode,
         silent_interval_ms=silent_interval_ms,
+        counter_mode=counter_mode,
     )
 
     try:
@@ -186,11 +223,15 @@ def main():
         quiet = mode == "silent"
         extractor.save_json(OUTPUT_FILE, verbose=not quiet)
         if extractor.packet_count > 0:
-            matched_packet_nos = {
-                attempt["packet_no"]
-                for attempt in matcher.attempts
-                if attempt["status"] == "matched"
-            }
+            matched_packet_nos = (
+                {
+                    attempt["packet_no"]
+                    for attempt in matcher.attempts
+                    if attempt["status"] == "matched"
+                }
+                if counter_mode == "packet"
+                else set()
+            )
             transform_json_file(
                 OUTPUT_FILE,
                 BITS_OUTPUT_FILE,
@@ -205,14 +246,19 @@ def main():
             POI_ADDRESS_OUTPUT_FILE,
             verbose=not quiet,
         )
+        run_subject = (
+            "Periodic counter run"
+            if counter_mode == "periodic"
+            else "Sniffing"
+        )
         if matcher.is_complete:
             print(
                 f"\nevery {len(matcher.windows)} window successfully matched. "
-                "Sniffing terminated."
+                f"{run_subject} terminated."
             )
         else:
             print(
-                f"\nSniffing terminated Progress: "
+                f"\n{run_subject} terminated. Progress: "
                 f"{matcher.match_count}/{len(matcher.windows)} windows matched."
             )
 
